@@ -1,0 +1,2 @@
+aichar==0.5.1
+ai-companion-py==0.1.2
