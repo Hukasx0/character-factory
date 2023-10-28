@@ -3,6 +3,11 @@ import aichar
 import ai_companion_py
 import requests
 from tqdm import tqdm
+import sdkit
+from sdkit.models import load_model
+from sdkit.generate import generate_images
+from sdkit.utils import log
+import torch
 
 llm = None
 
@@ -29,8 +34,24 @@ def prepare_llm():
             print(f'Model downloaded and saved to: {llm_model_name}')
         except Exception as e:
             print(f'Error while downloading LLM model: {str(e)}')
-    llm = ai_companion_py.init()
-    llm.load_model(llm_model_name)
+    sd_model_url = 'https://civitai.com/api/download/models/128713'
+    sd_model_name = os.path.join(folder_path, 'dreamshaper_8.safetensors')
+    if not os.path.exists(sd_model_name):
+        try:
+            print(f'Downloading Stable Diffusion model from: {sd_model_url}')
+            with requests.get(sd_model_url, stream=True) as response:
+                response.raise_for_status()
+                total_size = int(response.headers.get('content-length', 0))
+                block_size = 1024
+                progress_bar = tqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024)
+                with open(sd_model_name, 'wb') as out_file:
+                    for data in response.iter_content(chunk_size=block_size):
+                        out_file.write(data)
+                        progress_bar.update(len(data))
+                progress_bar.close()
+            print(f'Model downloaded and saved to: {sd_model_name}')
+        except Exception as e:
+            print(f'Error while downloading Stable Diffusion model: {str(e)}')
     llm = ai_companion_py.init()
     llm.load_model(llm_model_name)
     llm.change_companion_data("Generator", "The {{char}} is a tool for generating characters and their descriptions, {{char}} has no personality, {{char}} is to respond in the same style all the time, without giving any comments itself.", "", "", 0, 1, False)
@@ -100,11 +121,37 @@ def generate_character_greeting_message(character_name, character_summary, chara
 
 # def generate_character_example_messages()
 
+def generate_character_avatar(character_name, character_summary):
+    example_dialogue = """
+    {{user}}: create a prompt that lists the appearance characteristics of a character whose summary is Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him.
+    Jamie's appearance is always polished and professional. He is often seen in tailored suits that accentuate his well-maintained physique. His dark, well-groomed hair and neatly trimmed beard add to his refined image. His piercing blue eyes exude a sense of intense focus and ambition.
+    {{char}}: male, human, Confident and commanding presence, Polished and professional appearance, tailored suit, Well-maintained physique, Dark well-groomed hair, Neatly trimmed beard, blue eyes
+    {{user}}: create a prompt that lists the appearance characteristics of a character whose summary is     Yamari stands at a petite, delicate frame with a cascade of raven-black hair flowing down to her waist. A striking purple ribbon adorns her hair, adding an elegant touch to her appearance. Her eyes, large and expressive, are the color of deep amethyst, reflecting a kaleidoscope of emotions and sparkling with curiosity and wonder.
+    Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing moods and the whimsy of her adventures. She often sports a schoolgirl uniform, a cute kimono, or an array of anime-inspired outfits, each tailored to suit the theme of her current escapade. Accessories, such as oversized bows, cat-eared headbands, or a pair of mismatched socks, contribute to her quirky and endearing charm.
+    {{char}}: female, anime, Petite and delicate frame, Raven-black hair flowing down to her waist, Striking purple ribbon in her hair, Large and expressive amethyst-colored eyes, Colorful and eclectic outfit, oversized bows, cat-eared headbands, mismatched socks
+    """
+    llm.change_companion_example_dialogue(example_dialogue)
+    sd_prompt = llm.prompt(f"create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}")
+    image_generate(character_name, sd_prompt)
+
+def image_generate(character_name, prompt):
+    context = sdkit.Context()
+    if torch.cuda.is_available():
+        context.device = "cuda"
+    else:
+        context.device = "cpu"
+    context.model_paths['stable-diffusion'] = 'models/dreamshaper_8.safetensors'
+    load_model(context, 'stable-diffusion')
+    images = generate_images(context, prompt=prompt, seed=42, width=512, height=512)
+    images[0].save(character_name.replace(" ", "_")+".png")
+    log.info("Generated character avatar")
+
 def create_character():
     name = generate_character_name().strip()
     summary = generate_character_summary(name)
     personality = generate_character_personality(name, summary)
     greeting_message = generate_character_greeting_message(name, summary, personality)
+    generate_character_avatar(name, summary)
     return aichar.create_character(
         name=name,
         summary=summary,
@@ -112,14 +159,16 @@ def create_character():
         scenario="",
         greeting_message=greeting_message,
         example_messages="",
-        image_path=""
+        image_path=name+".png"
     )
 
 def main():
     prepare_llm()
     character = create_character()
     print(f"Created character:\n{character.data_summary}")
-    character.export_neutral_json_file(character.name.replace(" ", "_")+".json")
+    character_name = character.name.replace(" ", "_")
+    character.export_neutral_json_file(character_name+".json")
+    character.export_neutral_card_file(character_name+".card.png")
     llm.erase_longterm_mem()
 
 if __name__ == "__main__":
