@@ -3,3 +3,4 @@ ai-companion-py==0.1.3
 tqdm
 sdkit
 torch
+argparse
