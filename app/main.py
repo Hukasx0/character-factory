@@ -1,4 +1,5 @@
 import os
+import random
 import aichar
 import requests
 from tqdm import tqdm
@@ -155,7 +156,7 @@ def image_generate(character_name, prompt, negative_prompt):
         context.device = "cpu"
     context.model_paths['stable-diffusion'] = 'models/dreamshaper_8.safetensors'
     load_model(context, 'stable-diffusion')
-    images = generate_images(context, prompt=prompt, negative_prompt=negative_prompt, seed=42, width=512, height=512)
+    images = generate_images(context, prompt=prompt, negative_prompt=negative_prompt, seed=random.randint(0, 2**32 - 1), width=512, height=512)
     character_name = character_name.replace(" ", "_")
     if not os.path.exists(character_name):
         os.mkdir(character_name)
