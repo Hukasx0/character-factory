@@ -1,12 +1,18 @@
 # Character factory
-This Python script is designed to help you generate characters for SillyTavern, TavernAI, TextGenerationWebUI using LLM (Large Language Model) and Stable Diffusion. The script utilizes various deep learning models to create detailed character cards, including names, summaries, personalities, greeting messages, and character avatars.
+
+<a target="_blank" href="https://colab.research.google.com/drive/1JqkrtFXKalcmuMvST2VltoS1UVwoQINH">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+This Python script is designed to help you generate characters for [SillyTavern](https://github.com/SillyTavern/SillyTavern), [TavernAI](https://github.com/TavernAI/TavernAI), [TextGenerationWebUI](https://github.com/oobabooga/text-generation-webui) and many more, using LLM (Large Language Model) and Stable Diffusion. The script utilizes various deep learning models to create detailed character cards, including names, summaries, personalities, greeting messages, and character avatars.
 
 <div>
-  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Hinata_Otaishi/Hinata_Otaishi.card.png?raw=true" width="300" height="300" alt="Opis obrazka">
-  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Raven_Blackwood/Raven_Blackwood.card.png?raw=true" width="300" height="300" alt="Opis obrazka">
-  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Zephyrion_Stormrider/Zephyrion_Stormrider.card.png?raw=true" width="300" height="300" alt="Opis obrazka">
+  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Hinata_Otaishi/Hinata_Otaishi.card.png?raw=true" width="300" height="300" alt="Hinata Otaishi character card">
+  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Raven_Blackwood/Raven_Blackwood.card.png?raw=true" width="300" height="300" alt="Raven Blackwood character card">
+  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Zephyrion_Stormrider/Zephyrion_Stormrider.card.png?raw=true" width="300" height="300" alt="Zephyrion Stormrider character card">
+  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Albert_Einstein/Albert_Einstein.card.png?raw=true" width="300" height="300" alt="Albert Einstein character card">
 </div>
-(these three images above are valid character cards (V1), you can download them and use them in any frontend that supports character cards)
+(these four images above are valid character cards (V1), you can download them and use them in any frontend that supports character cards)
 
 ---
 
@@ -34,6 +40,20 @@ When you run the script for the first time, the script will automatically downlo
 
 ```--negative-prompt``` This flag is used to provide a negative prompt for Stable Diffusion. A negative prompt can be used to guide the generation of character avatars by specifying elements that should not be included in the avatar.
 
+## Colab usage
+1. Open the notebook in Google Colab by clicking the badge:
+<a target="_blank" href="https://colab.research.google.com/drive/1JqkrtFXKalcmuMvST2VltoS1UVwoQINH">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+2. After opening the link, you will see the notebook within the Google Colab environment.
+3. Make sure to check whether a GPU is selected for your environment. Running your script on a CPU will not work. To verify the GPU selection, follow these steps:
+   1. Click on "Runtime" in the top menu.
+   2. Change the CPU to one of these: T4 GPU, A100 GPU, V100 GPU
+   3. Click "Save."
+4. After the environment starts, you need to run each cell in turn
+5. If everything is prepared, you can just run the last cell to generate characters
+
 ## Example usage:
 ```
 python ./app/main.py --topic "anime schoolgirl" --negative-prompt "hyperrealistic, realistic, photo"
@@ -44,7 +64,9 @@ python ./app/main.py --topic "noir style detective" --negative-prompt "fantasy, 
 ```
 python ./app/main.py --topic "Old mage master of lightning" --negative-prompt "anime, nature, city, modern, young"
 ```
-
+```
+python ./app/main.py --name "Albert Einstein" --topic "science"
+```
 
 ## License
 2023 Hubert Kasperek
