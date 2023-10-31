@@ -54,17 +54,23 @@ def prepare_llm():
             print(f'Model downloaded and saved to: {sd_model_name}')
         except Exception as e:
             print(f'Error while downloading Stable Diffusion model: {str(e)}')
+    gpu_layers = 0
+    if torch.cuda.is_available():
+        gpu_layers = 110
+        print("Loading LLM to GPU...")
+    else:
+        print("Loading LLM to CPU...")
     llm = CTransformers(
         model="models/mistral-7b-instruct-v0.1.Q4_K_M.gguf",
         model_type="mistral",
-        gpu_layers=0,
+        gpu_layers=gpu_layers,
         config={'max_new_tokens': 1024,
                 'repetition_penalty': 1.1,
                 'top_k': 40,
                 'top_p': 0.95,
                 'temperature': 0.8,
-                'threads': 8,
                 'context_length': 8192,
+                'gpu_layers': gpu_layers,
                 'stop': ["/s", "</s>", "<s>", "[INST]", "[/INST]", "<|im_end|>"]}
     )
 
@@ -152,8 +158,10 @@ def image_generate(character_name, prompt, negative_prompt):
     context = sdkit.Context()
     if torch.cuda.is_available():
         context.device = "cuda"
+        print("Loading Stable Diffusion to GPU...")
     else:
         context.device = "cpu"
+        print("Loading Stable Diffusion to CPU...")
     context.model_paths['stable-diffusion'] = 'models/dreamshaper_8.safetensors'
     load_model(context, 'stable-diffusion')
     images = generate_images(context, prompt=prompt, negative_prompt=negative_prompt, seed=random.randint(0, 2**32 - 1), width=512, height=512)
