@@ -164,7 +164,7 @@ def image_generate(character_name, prompt, negative_prompt):
         print("Loading Stable Diffusion to CPU...")
     context.model_paths['stable-diffusion'] = 'models/dreamshaper_8.safetensors'
     load_model(context, 'stable-diffusion')
-    images = generate_images(context, prompt=prompt, negative_prompt=negative_prompt, seed=random.randint(0, 2**32 - 1), width=512, height=512)
+    images = generate_images(context, prompt=prompt, negative_prompt=negative_prompt or "", seed=random.randint(0, 2**32 - 1), width=512, height=512)
     character_name = character_name.replace(" ", "_")
     if not os.path.exists(character_name):
         os.mkdir(character_name)
@@ -177,8 +177,6 @@ def create_character(args):
     summary = args.summary if args.summary else generate_character_summary(name, topic)
     personality = args.personality if args.personality else generate_character_personality(name, summary, topic)
     greeting_message = args.greeting_message if args.greeting_message else generate_character_greeting_message(name, summary, personality, topic)
-    generate_character_avatar(name, summary, args)
-    name_path = name.replace(" ", "_")
     return aichar.create_character(
         name=name,
         summary=summary,
@@ -186,7 +184,7 @@ def create_character(args):
         scenario="",
         greeting_message=greeting_message,
         example_messages="",
-        image_path=f"{name_path}/{name_path}.png"
+        image_path=""
     )
 
 def parse_args():
@@ -204,13 +202,15 @@ def main():
     args = parse_args()
     prepare_llm()
     character = create_character(args)
-    print(f"Created character:\n{character.data_summary}")
     character_name = character.name.replace(" ", "_")
     if not os.path.exists(character_name):
         os.mkdir(character_name)
     character.export_neutral_json_file(f"{character_name}/{character_name}.json")
     character.export_neutral_yaml_file(f"{character_name}/{character_name}.yml")
+    generate_character_avatar(character.name, character.summary, args)
+    character.image_path = f"{character_name}/{character_name}.png"
     character.export_neutral_card_file(f"{character_name}/{character_name}.card.png")
+    print(character.data_summary)
 
 if __name__ == "__main__":
     main()
