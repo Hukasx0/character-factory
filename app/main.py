@@ -85,7 +85,7 @@ Eldric</s>
 Tatsukaga Yamari</s>
     """
     output = llm(example_dialogue+f"\n[INST] Generate a random character name. Topic: {topic} [/INST]\n")
-    output = re.sub(r'[^a-zA-Z0-9_-]', '', output)
+    output = re.sub(r'[^a-zA-Z0-9_ -]', '', output)
     print(output)
     return output
 
