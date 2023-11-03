@@ -1,1 +1,0 @@
-python ./app/main.py --topic "Old mage master of lightning" --negative-prompt "anime, nature, city, modern, young"
