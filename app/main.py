@@ -174,7 +174,8 @@ def generate_character_greeting_message(character_name, character_summary, chara
     prompt = f'''
     [INST] Create a unique greeting message for a character named {character_name}. 
     This character is known for {character_summary} and has a personality that is {character_personality}. 
-    The greeting should be in context with the topic of {topic} and reflect the character's unique traits and personality. [/INST]
+    The greeting should be in context with the topic of {topic} and reflect the character's unique traits and personality.
+    Try to be realistic, so don't go and say I'm a noir-style detective for example, that sounds weird. [/INST]
     '''
 
     output = llm(prompt)
