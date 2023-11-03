@@ -1,6 +1,9 @@
-aichar==0.5.1
+aichar
 tqdm
 sdkit
 torch
 argparse
 langchain
+ctransformers[cuda]
+torchtext==0.6.0
+
