@@ -122,8 +122,10 @@ Jamie Hale</s>
 Eldric</s>
 <s>[INST] Generate a random character name. Topic: anime [/INST]
 Tatsukaga Yamari</s>
+<s>[INST] Generate a random character name. Topic: War [/INST]
+Sgt. Ademant Ricochet</s>
     """
-    output = llm(example_dialogue + f"\n[INST] Generate random character name based on Topic: {topic} and Gender: {args.gender}.[/INST]\n")
+    output = llm(example_dialogue + f"\n[INST] Generate random character Gender:{args.gender} and the Topic:{topic}.[/INST]\n")
     print(output)
     return output
 
@@ -245,9 +247,8 @@ female, anime, Petite and delicate frame, Raven-black hair flowing down to her w
     image_generate(character_name, sd_prompt, args.negative_prompt if args.negative_prompt else "")
 
 
-def image_generate(character_name, prompt, negative_prompt, args):
+def image_generate(character_name, prompt, negative_prompt):
     context = sdkit.Context()
-    gender = args.gender
     if torch.cuda.is_available():
         context.device = "cuda"
         print("Loading Stable Diffusion to GPU...")
