@@ -30,6 +30,9 @@ if not "!avatar_prompt!"=="" set "args=!args! --avatar-prompt "!avatar_prompt!""
 set /p "negative_prompt=Enter negative prompt for Stable Diffusion (press Enter to skip): "
 if not "!negative_prompt!"=="" set "args=!args! --negative-prompt "!negative_prompt!""
 
+set /p "gender=Enter character gender (male, female, etc... or press Enter for no preference): "
+if not "!gender!"=="" set "args=!args! --gender "!gender!""
+
 echo Running command: python ./app/main.py !args!
 python ./app/main.py !args!
 if %ERRORLEVEL% neq 0 pause

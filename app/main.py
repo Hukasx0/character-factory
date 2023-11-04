@@ -88,7 +88,33 @@ def prepare_llm():
     )
 
 
-def generate_character_name(topic):
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Script created to help you generate characters for SillyTavern, TavernAI, TextGenerationWebUI using LLM and Stable Diffusion ")
+    parser.add_argument("--name", type=str, help="Specify the character name (otherwise LLM will generate it)")
+    parser.add_argument("--summary", type=str, help="Specify the character's summary (otherwise LLM will generate it)")
+    parser.add_argument("--personality", type=str,
+                        help="Specify the character's personality (otherwise LLM will generate it)")
+    parser.add_argument("--scenario", type=str,
+                        help="Specify the character's scenario (otherwise LLM will generate it)")
+    parser.add_argument("--greeting-message", type=str,
+                        help="Specify the character's greeting message (otherwise LLM will generate it)")
+    parser.add_argument("--example_messages", type=str,
+                        help="Specify example messages for the character (otherwise LLM will generate it)")
+    parser.add_argument("--avatar-prompt", type=str,
+                        help="Specify the prompt for generating the character's avatar (otherwise LLM will generate it)")
+    parser.add_argument("--topic", type=str,
+                        help="Specify the topic for character generation (Fantasy, Anime, Warrior, Dwarf etc)")
+    parser.add_argument("--negative-prompt", type=str, help="Negative prompt for Stable Diffusion")
+
+    parser.add_argument("--gender", type=str,
+                        help="Specify the gender for character generation (male, female)")
+    return parser.parse_args()
+
+
+
+def generate_character_name(topic, args):
     example_dialogue = """
 <s>[INST] Generate a random character name. Topic: business [/INST]
 Jamie Hale</s>
@@ -97,12 +123,11 @@ Eldric</s>
 <s>[INST] Generate a random character name. Topic: anime [/INST]
 Tatsukaga Yamari</s>
     """
-    output = llm(example_dialogue + f"\n[INST] Generate a random character name. Topic: {topic} [/INST]\n")
+    output = llm(example_dialogue + f"\n[INST] Generate random character name based on Topic: {topic} and Gender: {args.gender}.[/INST]\n")
     print(output)
     return output
 
-
-def generate_character_summary(character_name, topic):
+def generate_character_summary(character_name, topic, args):
     example_dialogue = """
 <s>[INST] Create a description for a character named Jamie Hale. Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Topic: business [/INST]
 Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him.
@@ -214,14 +239,15 @@ female, anime, Petite and delicate frame, Raven-black hair flowing down to her w
     """
     topic = args.topic if args.topic else ""
     sd_prompt = args.avatar_prompt if args.avatar_prompt else llm(
-        example_dialogue + f"\n[INST] create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}. Topic: {topic} [/INST]\n")
+        example_dialogue + f"\n[INST] create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}. Topic: {topic} and Gender {args.gender} [/INST]\n")
     sd_prompt = topic + sd_prompt
     print(sd_prompt)
     image_generate(character_name, sd_prompt, args.negative_prompt if args.negative_prompt else "")
 
 
-def image_generate(character_name, prompt, negative_prompt):
+def image_generate(character_name, prompt, negative_prompt, args):
     context = sdkit.Context()
+    gender = args.gender
     if torch.cuda.is_available():
         context.device = "cuda"
         print("Loading Stable Diffusion to GPU...")
@@ -242,8 +268,8 @@ def image_generate(character_name, prompt, negative_prompt):
 
 def create_character(args):
     topic = args.topic if args.topic else "random"
-    name = args.name if args.name else generate_character_name(topic).strip()
-    summary = args.summary if args.summary else generate_character_summary(name, topic)
+    name = args.name if args.name else generate_character_name(topic, args).strip()
+    summary = args.summary if args.summary else generate_character_summary(name, topic, args)
     personality = args.personality if args.personality else generate_character_personality(name, summary, topic)
     scenario = args.scenario if args.scenario else generate_character_scenario(summary, personality, topic)
     greeting_message = args.greeting_message if args.greeting_message else generate_character_greeting_message(name,
@@ -261,27 +287,6 @@ def create_character(args):
         example_messages=example_messages,
         image_path=""
     )
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Script created to help you generate characters for SillyTavern, TavernAI, TextGenerationWebUI using LLM and Stable Diffusion ")
-    parser.add_argument("--name", type=str, help="Specify the character name (otherwise LLM will generate it)")
-    parser.add_argument("--summary", type=str, help="Specify the character's summary (otherwise LLM will generate it)")
-    parser.add_argument("--personality", type=str,
-                        help="Specify the character's personality (otherwise LLM will generate it)")
-    parser.add_argument("--scenario", type=str,
-                        help="Specify the character's scenario (otherwise LLM will generate it)")
-    parser.add_argument("--greeting-message", type=str,
-                        help="Specify the character's greeting message (otherwise LLM will generate it)")
-    parser.add_argument("--example_messages", type=str,
-                        help="Specify example messages for the character (otherwise LLM will generate it)")
-    parser.add_argument("--avatar-prompt", type=str,
-                        help="Specify the prompt for generating the character's avatar (otherwise LLM will generate it)")
-    parser.add_argument("--topic", type=str,
-                        help="Specify the topic for character generation (Fantasy, Anime, Warrior, Dwarf etc)")
-    parser.add_argument("--negative-prompt", type=str, help="Negative prompt for Stable Diffusion")
-    return parser.parse_args()
 
 
 def main():
