@@ -42,7 +42,7 @@ When you run the script for the first time, the script will automatically downlo
 
 ```--scenario``` Use this flag to specify the character's scenario. If you provide a scenario, it will be used for the character. If not provided, the script will use LLM to generate a scenario for the character.
 
-```--example_messages``` Specify example messages for the character using this flag. If you provide example messages, they will be used for the character. If not provided, the script will use LLM to generate example messages for the character.
+```--example-messages``` Specify example messages for the character using this flag. If you provide example messages, they will be used for the character. If not provided, the script will use LLM to generate example messages for the character.
 
 ## Colab usage
 1. Open the notebook in Google Colab by clicking the badge:
