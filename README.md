@@ -35,6 +35,8 @@ When you run the script for the first time, the script will automatically downlo
 ## Generation options
 ```--name``` This flag allows you to specify the character's name. If provided, the script will use the name you specify. If not provided, the script will use the Language Model (LLM) to generate a name for the character.
 
+```--gender``` Use this parameter to specify the character's gender. If provided, the script will use the specified gender. Otherwise, LLM will choose the gender.
+
 ```--summary``` Use this flag to specify the character's summary. If you provide a summary, it will be used for the character. If not provided, the script will use LLM to generate a summary for the character.
 
 ```--personality``` This flag lets you specify the character's personality. If you provide a personality description, it will be used. If not provided, the script will use LLM to generate a personality description for the character.
