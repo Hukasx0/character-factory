@@ -20,8 +20,15 @@ This script is designed to streamline the process of character generation for Si
 
 ## Prerequisites
 Before running the script, make sure you have Python3 and dependencies installed:
+
+CPU:
 ```py
 pip install -r requirements.txt
+```
+
+CUDA:
+```py
+pip install -r requirements-cuda.txt
 ```
 When you run the script for the first time, the script will automatically download the required LLM and Stable Diffusion models
 
@@ -69,7 +76,7 @@ python ./app/main.py --topic "noir style detective" --negative-prompt "fantasy, 
 python ./app/main.py --topic "Old mage master of lightning" --negative-prompt "anime, nature, city, modern, young"
 ```
 ```
-python ./app/main.py --name "Albert Einstein" --topic "science"
+python ./app/main.py --name "Albert Einstein" --topic "science" --avatar-prompt "Albert Einstein"
 ```
 
 ## License
