@@ -274,7 +274,7 @@ def input_with_timeout(prompt, timeout):
 
     if thread.is_alive():
         keyboard.press_and_release('enter')  # Simulate pressing the Enter key
-        print("\nNo input received. Continuing with the generated name.")
+        print("\nNo input received. Continuing with the generated name. You may need to press enter if nothing is happening")
         thread.join()  # Ensure the thread has finished
     else:
         print(f"Input received: {result[0]}")
