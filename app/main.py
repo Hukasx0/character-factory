@@ -11,7 +11,6 @@ from sdkit.utils import log
 import torch
 import argparse
 from langchain.llms import CTransformers
-
 import threading
 import keyboard
 
@@ -143,7 +142,7 @@ The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequentl
 
 def generate_character_greeting_message(character_name, character_summary, character_personality, topic):
     # Generate a dynamic greeting based on character details and topic
-    prompt = f'''
+    prompt = f"""
 [INST] Create a unique greeting message for a character named {character_name}. 
 This character is known for {character_summary} and has a personality that is {character_personality}. 
 The greeting should be in context with the topic of {topic} and reflect the character's unique traits and personality.
@@ -152,7 +151,7 @@ You could be either a stranger, partner, or even working for {{user}} thus try t
 here are some example dialogue:
 *{{char}} gives a warm smile and extends his hand for a handshake.* "The pleasure is mine, {{user}}. Your reputation precedes you. Let's make this venture a success together."
 *I Nod with determination.* I have no doubt we can do it. With your magic and our unwavering friendship, there's nothing we can't accomplish.[/INST]
-'''
+"""
 
     output = llm(prompt)
     print(output)
@@ -215,6 +214,26 @@ def image_generate(character_name, prompt, negative_prompt):
         os.mkdir(character_name)
     images[0].save(f"{character_name}/{character_name}.png")
     log.info("Generated character avatar")
+
+# Function to handle input with a timeout
+def input_with_timeout(prompt, timeout):
+    print(prompt, end=' ', flush=True)  # Show prompt to user
+    result = [None]  # A mutable container to store the input
+
+    def input_thread(L):
+        L[0] = input()
+
+    thread = threading.Thread(target=input_thread, args=(result,))
+    thread.start()
+    thread.join(timeout)  # Wait for the thread to finish or timeout
+
+    if thread.is_alive():
+        keyboard.press_and_release('enter')  # Simulate pressing the Enter key
+        print("\nNo input received. Continuing with the generated name.")
+        thread.join()  # Ensure the thread has finished
+    else:
+        print(f"Input received: {result[0]}")
+    return result[0]
 
 def create_character(args):
     topic = args.topic if args.topic else "any theme"
