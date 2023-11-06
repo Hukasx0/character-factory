@@ -248,7 +248,7 @@ def create_character(args):
     if sanitize_name == 'y':
         name = input("Enter the sanitized character name: ").strip()
         if name == '':
-            print("No sanitized name entered. Continuing with the generated name.")
+            print("No sanitized name entered. Continuing with the generated name. \n(you may need to press enter yourself to continue)")
             name = generate_character_name(topic, args).strip()
 
     summary = args.summary if args.summary else generate_character_summary(name, topic, args)
@@ -279,8 +279,17 @@ def parse_args():
     parser.add_argument("--negative-prompt", type=str, help="Negative prompt for Stable Diffusion")
     return parser.parse_args()
 
+def save_arguments_to_file(args, filename="last_used_arguments.txt"):
+    # Open the file in write mode
+    with open(filename, 'w') as file:
+        # Write each argument and its value to the file
+        for arg in vars(args):
+            file.write(f"{arg}: {getattr(args, arg)}\n")
+    print(f"Arguments saved to {filename}")
+
 def main():
     args = parse_args()
+    save_arguments_to_file(args)
     prepare_llm()
     character = create_character(args)
     character_name = character.name.replace(" ", "_")
