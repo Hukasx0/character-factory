@@ -16,6 +16,7 @@ import keyboard
 
 llm = None
 
+
 def prepare_llm():
     global llm
     folder_path = 'models'
@@ -77,6 +78,7 @@ def prepare_llm():
                 'stop': ["/s", "</s>", "<s>", "[INST]", "[/INST]", "<|im_end|>"]}
     )
 
+
 def generate_character_name(topic, args):
     example_dialogue = """
 <s>[INST] Generate a random character name. Topic: business. Gender: male [/INST]
@@ -86,10 +88,13 @@ Eldric</s>
 <s>[INST] Generate a random character name. Topic: anime. Gender: female [/INST]
 Tatsukaga Yamari</s>
     """
-    output = llm(example_dialogue+f"\n[INST] Generate a random character name. Topic: {topic}. {'Gender: '+args.gender if args.gender else ''} [/INST]\n")
+    print("Generating Character Name")
+    output = llm(
+        example_dialogue + f"\n[INST] Generate a random character name. Topic: {topic}. {'Gender: ' + args.gender if args.gender else ''} [/INST]\n")
     output = re.sub(r'[^a-zA-Z0-9_ -]', '', output)
     print(output)
     return output
+
 
 def generate_character_summary(character_name, topic, args):
     example_dialogue = """
@@ -107,9 +112,12 @@ Yamari is renowned for her spirited and imaginative nature. She exudes boundless
 Yamari's character is multifaceted. She can transition from being cheerful and optimistic, ready to tackle any challenge, to displaying a gentle, caring side, offering comfort and solace to those in need. Her infectious laughter and unwavering loyalty to her friends make her the heart and soul of the story she inhabits.
 Yamari's extraordinary abilities, involve tapping into her inner strength when confronted with adversity. She can unleash awe-inspiring magical spells and summon incredible, larger-than-life transformations when the situation calls for it. Her unwavering determination and belief in the power of friendship are her greatest assets. </s>
     """
-    output = llm(example_dialogue+f"\n[INST] Create a description for a character named {character_name}. {'Character gender: '+args.gender+'.' if args.gender else ''} Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
-    print(output+"\n")
+    print("Generating Character Summary")
+    output = llm(
+        example_dialogue + f"\n[INST] Create a description for a character named {character_name}. {'Character gender: ' + args.gender + '.' if args.gender else ''} Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
+    print(output + "\n")
     return output
+
 
 def generate_character_personality(character_name, character_summary, topic):
     example_dialogue = """
@@ -121,8 +129,10 @@ Yamari stands at a petite, delicate frame with a cascade of raven-black hair flo
 Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing moods and the whimsy of her adventures.\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of anime but don't specify what topic it is, and don't describe the topic itself [/INST]
 Tatsukaga Yamari's personality is a vibrant tapestry of enthusiasm, curiosity, and whimsy. She approaches life with boundless energy and a spirit of adventure, always ready to embrace new experiences and challenges. Yamari is a compassionate and caring friend, offering solace and support to those in need, and her infectious laughter brightens the lives of those around her. Her unwavering loyalty and belief in the power of friendship define her character, making her a heartwarming presence in the story she inhabits. Underneath her playful exterior lies a wellspring of inner strength, as she harnesses incredible magical abilities to overcome adversity and protect her loved ones. </s>
     """
-    output = llm(example_dialogue+f"\n[INST] Describe the personality of {character_name}. Their characteristic {character_summary}\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
-    print(output+"\n")
+    print("Generating Character Personality")
+    output = llm(
+        example_dialogue + f"\n[INST] Describe the personality of {character_name}. Their characteristic {character_summary}\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
+    print(output + "\n")
     return output
 
 
@@ -134,6 +144,7 @@ On a sunny morning in a sleek corporate office, {{user}} eagerly prepares to mee
 {{user}} resides in a mesmerizing and ever-changing fantasy realm, where magic and imagination are part of everyday life. In this enchanting world, {{char}} is a well-known figure. With her raven-black hair, amethyst eyes, and boundless energy, she's a constant presence in {{user}}'s life.
 The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequently joins Yamari on epic quests and adventures that unveil supernatural mysteries. They rely on Yamari's extraordinary magical abilities to guide them through the whimsical landscapes and forge new friendships along the way. In this extraordinary realm, the unwavering belief in the power of friendship is the key to unlocking hidden wonders and embarking on unforgettable journeys. </s>
 '''
+    print("Generating Character Scenario")
     output = llm(
         example_dialogue + f"\n[INST] Create a vivid and immersive scenario in a specific setting or world where {{char}} and {{user}} are a central figures. Describe the environment, the character's appearance, and a typical interaction or event that highlights their personality and role in the story. {{char}} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
     print(output + "\n")
@@ -142,24 +153,51 @@ The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequentl
 
 def generate_character_greeting_message(character_name, character_summary, character_personality, topic):
     # Generate a dynamic greeting based on character details and topic
-    prompt = f"""
-[INST] Create a unique greeting message for a character named {character_name}. 
-This character is known for {character_summary} and has a personality that is {character_personality}. 
-The greeting should be in context with the topic of {topic} and reflect the character's unique traits and personality.
-Try to be realistic, so don't go and say I'm a noir-style detective for example, that sounds weird. 
-You could be either a stranger, partner, or even working for {{user}} thus try to keep your greeting universal. 
-here are some example dialogue:
-*{{char}} gives a warm smile and extends his hand for a handshake.* "The pleasure is mine, {{user}}. Your reputation precedes you. Let's make this venture a success together."
-*I Nod with determination.* I have no doubt we can do it. With your magic and our unwavering friendship, there's nothing we can't accomplish.[/INST]
-"""
+    example_dialogue = f"""
+    [INST] Create a unique and immersive greeting message to greet {{user}}, speaking and acting as {character_name}.
+    This character is known for being {character_summary} and has a personality that is {character_personality}.
+    The greeting should creatively link to the topic of {topic} and reflect the character's unique traits and personality.
 
-    output = llm(prompt)
+    The message should place {{user}} and {character_name} in a specific, vividly described scenario that relates to the topic. 
+    Include sensory details, the character's actions, thoughts, and dialogue, crafting a brief but engaging narrative encounter. 
+    Avoid generic statements; aim for a personalized and memorable interaction that could only happen between {{user}} and {character_name}.
+    Do not generate responses for {{user}}, only for {character_name}.
+
+    Avoid simply replicating the structure and content of the example provided. Instead, use the example as a springboard for crafting an entirely original and context-specific greeting.
+
+    Bad Examples:
+    1. *As {{user}} enters the room, {character_name} looks up from their work on a device related to {topic}, and says: "Ah, {{user}}, I knew you'd come. Let's discuss {topic}."*
+       This is too similar to the provided example and lacks originality and specific sensory and environmental details.
+
+    2. *{{user}} walks in, and without missing a beat, {character_name} gestures broadly to a wall of related {topic} paraphernalia, proclaiming, "Welcome, {{user}}! You're just in time to talk about {topic}."*
+       This example is overly direct and fails to incorporate the character's {character_personality} personality or provide a rich, sensory experience.
+
+    Good Examples:
+    1. *The aroma of ancient tomes and the whisper of turning pages envelop {{user}} as they step across the threshold into {character_name}'s sanctum. With a {character_personality} glint in their eye, {character_name} gently closes a hefty, leather-bound grimoire that hums with the essence of {topic}.*
+
+       {character_name}: "The threads of fate are curious indeed, {{user}}. To what do I owe the pleasure of this rare visit? Or is it the enigma of {topic} that beckons you to my library's secrets?"
+
+    2. *A cacophony of mechanical harmonies greets {{user}} as they duck into {character_name}'s wind-powered workshop. Amidst the symphony of spinning gears and fluttering propellers, {character_name}, true to their {character_personality} nature, is engrossed in a delicate dance of creation.*
+
+       {character_name}: "Ah, {{user}}, you arrive like a gust on a calm day, unexpected yet invigorating! I have a contraption here that's just brimming with questions about {topic}. Shall we let curiosity chart our course tonight?"
+
+    3. *Chill air and the faint scent of ozone cling to {{user}} as they step into the stark lab where {character_name}, with their {character_personality} presence, manipulates streaks of artificial lightning. The arcs pulse in time with {topic}, seemingly alive.*
+
+       {character_name}: "Your timing is as impeccable as ever, {{user}}. It's not every day my experiments resonate with the energy of {topic}. But I suspect you're here for more than just observation. What's the real reason behind your visit?"
+
+    These examples provide unique settings, incorporate the character's {character_personality} nature, and introduce the topic of {topic} in a subtle and natural way, without directly copying the original example.
+
+    [END INST]
+    """
+    print("Generating Character Greeting Message")
+    # Replace 'llm(prompt)' with the actual AI model call
+    output = llm(
+        example_dialogue + f" [INST] Initiate an engaging and natural-sounding dialogue from {{char}}, who is {character_name}, featuring an action like a handshake or a playful gesture towards {{user}}. {character_name}'s unique characteristics ({character_summary}, {character_personality}) should shine through. The dialogue should subtly hint at the theme of {topic} without explicit mention. Only {character_name}'s side of the dialogue and actions are to be scripted; do not script {{user}}'s responses and actions. [END INST]")
     print(output)
     return output.strip()
 
-
 def generate_example_messages(character_name, character_summary, character_personality, topic):
-    example_dialogue = f"""
+    example_dialogue = ''' 
 <s>[INST] Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a handshake, movement, or playful gesture. Make it sound natural and dynamic. {{char}} is {character_name}. {character_name} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what the topic is, and don't describe the topic itself [/INST]
 {{user}}: "Good afternoon, Mr. {{char}}. I've heard so much about your success. It's an honor to meet you."
 {{char}}: *{{char}} gives a warm smile and extends his hand for a handshake.* "The pleasure is mine, {{user}}. Your reputation precedes you. Let's make this a success together."
@@ -171,12 +209,14 @@ def generate_example_messages(character_name, character_summary, character_perso
 {{char}}: *{{char}} grabs {{user}}'s hand and playfully twirls them around before letting go.* "We're off to a new challenge. It's a treacherous journey, but I believe in us."
 {{user}}: *Nods with determination.* "With your skills and our friendship, there's nothing we can't accomplish."
 {{char}}: *{{char}} moves closer, their eyes shining with trust.* "That's the spirit, {{user}}! Let's embark on this quest together!"
-</s>
-"""
-    # The llm function is a placeholder for a language model call.
-    output = llm(example_dialogue)
+</s>'''
+
+    print("Generating Character Example Messages")
+    output = llm(
+        example_dialogue + f"\n[INST] Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a handshake, movement, or playful gesture. Make it sound natural and dynamic. {{char}} is {character_name}. {character_name} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
     print(output + "\n")
     return output
+
 
 def generate_character_avatar(character_name, character_summary, args):
     example_dialogue = """
@@ -187,16 +227,19 @@ male, human, Confident and commanding presence, Polished and professional appear
 Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing moods and the whimsy of her adventures. She often sports a schoolgirl uniform, a cute kimono, or an array of anime-inspired outfits, each tailored to suit the theme of her current escapade. Accessories, such as oversized bows, cat-eared headbands, or a pair of mismatched socks, contribute to her quirky and endearing charm. Topic: anime [/INST]
 female, anime, Petite and delicate frame, Raven-black hair flowing down to her waist, Striking purple ribbon in her hair, Large and expressive amethyst-colored eyes, Colorful and eclectic outfit, oversized bows, cat-eared headbands, mismatched socks </s>
     """
+    print("Generating Character Avatar")
     topic = args.topic if args.topic else ""
     gender = args.gender if args.gender else ""
-    sd_prompt = args.avatar_prompt if args.avatar_prompt else llm(example_dialogue+f"\n[INST] create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}. Topic: {topic} [/INST]\n")
+    sd_prompt = args.avatar_prompt if args.avatar_prompt else llm(
+        example_dialogue + f"\n[INST] create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}. Topic: {topic} [/INST]\n")
     if gender or topic or sd_prompt:
-      params = [param for param in [gender, topic, sd_prompt] if param]
-      sd_prompt = ", ".join(params)
+        params = [param for param in [gender, topic, sd_prompt] if param]
+        sd_prompt = ", ".join(params)
     else:
-      sd_prompt = ""
+        sd_prompt = ""
     print(sd_prompt)
     image_generate(character_name, sd_prompt, args.negative_prompt if args.negative_prompt else "")
+
 
 def image_generate(character_name, prompt, negative_prompt):
     context = sdkit.Context()
@@ -208,12 +251,14 @@ def image_generate(character_name, prompt, negative_prompt):
         print("Loading Stable Diffusion to CPU...")
     context.model_paths['stable-diffusion'] = 'models/dreamshaper_8.safetensors'
     load_model(context, 'stable-diffusion')
-    images = generate_images(context, prompt=prompt, negative_prompt=negative_prompt or "", seed=random.randint(0, 2**32 - 1), width=512, height=512)
+    images = generate_images(context, prompt=prompt, negative_prompt=negative_prompt or "",
+                             seed=random.randint(0, 2 ** 32 - 1), width=512, height=512)
     character_name = character_name.replace(" ", "_")
     if not os.path.exists(character_name):
         os.mkdir(character_name)
     images[0].save(f"{character_name}/{character_name}.png")
     log.info("Generated character avatar")
+
 
 # Function to handle input with a timeout
 def input_with_timeout(prompt, timeout):
@@ -235,12 +280,14 @@ def input_with_timeout(prompt, timeout):
         print(f"Input received: {result[0]}")
     return result[0]
 
+
 def create_character(args):
     topic = args.topic if args.topic else "any theme"
     name = args.name if args.name else generate_character_name(topic, args).strip()
-        # Ask user if they want to sanitize the generated name with a timeout
+    # Ask user if they want to sanitize the generated name with a timeout
     try:
-        sanitize_name = input_with_timeout("Do you want to sanitize the generated name? You have 10 seconds to respond (y/n): ", 10).strip().lower()
+        sanitize_name = input_with_timeout(
+            "Do you want to sanitize the generated name? You have 10 seconds to respond (y/n): ", 10).strip().lower()
     except TimeoutOccurred:
         print("You did not respond in time. Continuing with the generated name.")
         sanitize_name = 'n'
@@ -248,14 +295,19 @@ def create_character(args):
     if sanitize_name == 'y':
         name = input("Enter the sanitized character name: ").strip()
         if name == '':
-            print("No sanitized name entered. Continuing with the generated name. \n(you may need to press enter yourself to continue)")
+            print(
+                "No sanitized name entered. Continuing with the generated name. \n(you may need to press enter yourself to continue)")
             name = generate_character_name(topic, args).strip()
 
     summary = args.summary if args.summary else generate_character_summary(name, topic, args)
     personality = args.personality if args.personality else generate_character_personality(name, summary, topic)
     scenario = args.scenario if args.scenario else generate_character_scenario(summary, personality, topic)
-    greeting_message = args.greeting_message if args.greeting_message else generate_character_greeting_message(name, summary, personality, topic)
-    example_messages = args.example_messages if args.example_messages else generate_example_messages(name, summary, personality, topic)
+    greeting_message = args.greeting_message if args.greeting_message else generate_character_greeting_message(name,
+                                                                                                               summary,
+                                                                                                               personality,
+                                                                                                               topic)
+    example_messages = args.example_messages if args.example_messages else generate_example_messages(name, summary,
+                                                                                                     personality, topic)
     return aichar.create_character(
         name=name,
         summary=summary,
@@ -265,19 +317,30 @@ def create_character(args):
         example_messages=example_messages,
         image_path=""
     )
+
+
 def parse_args():
-    parser = argparse.ArgumentParser(description="Script created to help you generate characters for SillyTavern, TavernAI, TextGenerationWebUI using LLM and Stable Diffusion ")
+    parser = argparse.ArgumentParser(
+        description="Script created to help you generate characters for SillyTavern, TavernAI, TextGenerationWebUI using LLM and Stable Diffusion ")
     parser.add_argument("--name", type=str, help="Specify the character name (otherwise LLM will generate it)")
     parser.add_argument("--summary", type=str, help="Specify the character's summary (otherwise LLM will generate it)")
-    parser.add_argument("--personality", type=str, help="Specify the character's personality (otherwise LLM will generate it)")
-    parser.add_argument("--scenario", type=str, help="Specify the character's scenario (otherwise LLM will generate it)")
-    parser.add_argument("--greeting-message", type=str, help="Specify the character's greeting message (otherwise LLM will generate it)")
-    parser.add_argument("--example_messages", type=str, help="Specify example messages for the character (otherwise LLM will generate it)")
-    parser.add_argument("--avatar-prompt", type=str, help="Specify the prompt for generating the character's avatar (otherwise LLM will generate it)")
-    parser.add_argument("--topic", type=str, help="Specify the topic for character generation (Fantasy, Anime, Warrior, Dwarf etc)")
-    parser.add_argument("--gender", type=str, help="Specify the gender of the character (otherwise LLM will choose itself)")
+    parser.add_argument("--personality", type=str,
+                        help="Specify the character's personality (otherwise LLM will generate it)")
+    parser.add_argument("--scenario", type=str,
+                        help="Specify the character's scenario (otherwise LLM will generate it)")
+    parser.add_argument("--greeting-message", type=str,
+                        help="Specify the character's greeting message (otherwise LLM will generate it)")
+    parser.add_argument("--example_messages", type=str,
+                        help="Specify example messages for the character (otherwise LLM will generate it)")
+    parser.add_argument("--avatar-prompt", type=str,
+                        help="Specify the prompt for generating the character's avatar (otherwise LLM will generate it)")
+    parser.add_argument("--topic", type=str,
+                        help="Specify the topic for character generation (Fantasy, Anime, Warrior, Dwarf etc)")
+    parser.add_argument("--gender", type=str,
+                        help="Specify the gender of the character (otherwise LLM will choose itself)")
     parser.add_argument("--negative-prompt", type=str, help="Negative prompt for Stable Diffusion")
     return parser.parse_args()
+
 
 def save_arguments_to_file(args, filename="last_used_arguments.txt"):
     # Open the file in write mode
@@ -286,6 +349,7 @@ def save_arguments_to_file(args, filename="last_used_arguments.txt"):
         for arg in vars(args):
             file.write(f"{arg}: {getattr(args, arg)}\n")
     print(f"Arguments saved to {filename}")
+
 
 def main():
     args = parse_args()
@@ -301,6 +365,7 @@ def main():
     character.image_path = f"{character_name}/{character_name}.png"
     character.export_neutral_card_file(f"{character_name}/{character_name}.card.png")
     print(character.data_summary)
+
 
 if __name__ == "__main__":
     main()

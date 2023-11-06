@@ -1,0 +1,10 @@
+name: None
+summary: 3
+personality: 3
+scenario: war, in military, magic user
+greeting_message: None
+example_messages: None
+avatar_prompt: 1girl, army
+topic: war, fantasy, historic
+gender: female
+negative_prompt: ugly
