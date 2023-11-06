@@ -12,7 +12,6 @@ import torch
 import argparse
 from langchain.llms import CTransformers
 import threading
-import keyboard
 
 llm = None
 
@@ -217,20 +216,19 @@ def image_generate(character_name, prompt, negative_prompt):
 
 # Function to handle input with a timeout
 def input_with_timeout(prompt, timeout):
-    print(prompt, end=' ', flush=True)  # Show prompt to user
     result = [None]  # A mutable container to store the input
+    input_received = [False]  # Flag to check if input was received
 
-    def input_thread(L):
-        L[0] = input()
+    def input_thread(result, input_received):
+        result[0] = input()
+        input_received[0] = True
 
-    thread = threading.Thread(target=input_thread, args=(result,))
+    thread = threading.Thread(target=input_thread, args=(result, input_received))
     thread.start()
     thread.join(timeout)  # Wait for the thread to finish or timeout
 
-    if thread.is_alive():
-        keyboard.press_and_release('enter')  # Simulate pressing the Enter key
+    if not input_received[0]:
         print("\nNo input received. Continuing with the generated name.")
-        thread.join()  # Ensure the thread has finished
     else:
         print(f"Input received: {result[0]}")
     return result[0]
