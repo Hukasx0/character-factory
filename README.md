@@ -20,13 +20,22 @@ This script is designed to streamline the process of character generation for Si
 
 ## Prerequisites
 Before running the script, make sure you have Python3 and dependencies installed:
+
+CPU:
 ```py
 pip install -r requirements.txt
+```
+
+CUDA:
+```py
+pip install -r requirements-cuda.txt
 ```
 When you run the script for the first time, the script will automatically download the required LLM and Stable Diffusion models
 
 ## Generation options
-```--name:``` This flag allows you to specify the character's name. If provided, the script will use the name you specify. If not provided, the script will use the Language Model (LLM) to generate a name for the character.
+```--name``` This flag allows you to specify the character's name. If provided, the script will use the name you specify. If not provided, the script will use the Language Model (LLM) to generate a name for the character.
+
+```--gender``` Use this parameter to specify the character's gender. If provided, the script will use the specified gender. Otherwise, LLM will choose the gender.
 
 ```--summary``` Use this flag to specify the character's summary. If you provide a summary, it will be used for the character. If not provided, the script will use LLM to generate a summary for the character.
 
@@ -36,9 +45,13 @@ When you run the script for the first time, the script will automatically downlo
 
 ```--avatar-prompt``` This flag allows you to specify the prompt for generating the character's avatar. If provided, the script will use the specified prompt for avatar generation. If not provided, the script will use LLM to generate the prompt for the avatar.
 
-```--topic``` Specify the topic for character generation using this flag. Topics can include "Fantasy", "Anime", "Warrior", "Dwarf" or any other topic relevant to your character. The topic can influence the character's details and characteristics.
+```--topic``` Specify the topic for character generation using this flag. Topics can include "Fantasy", "Anime", "Noir style detective", "Old mage master of lightning", or any other topic relevant to your character. The topic can influence the character's details and characteristics.
 
 ```--negative-prompt``` This flag is used to provide a negative prompt for Stable Diffusion. A negative prompt can be used to guide the generation of character avatars by specifying elements that should not be included in the avatar.
+
+```--scenario``` Use this flag to specify the character's scenario. If you provide a scenario, it will be used for the character. If not provided, the script will use LLM to generate a scenario for the character.
+
+```--example-messages``` Specify example messages for the character using this flag. If you provide example messages, they will be used for the character. If not provided, the script will use LLM to generate example messages for the character.
 
 ## Colab usage
 1. Open the notebook in Google Colab by clicking the badge:
@@ -65,7 +78,7 @@ python ./app/main.py --topic "noir style detective" --negative-prompt "fantasy, 
 python ./app/main.py --topic "Old mage master of lightning" --negative-prompt "anime, nature, city, modern, young"
 ```
 ```
-python ./app/main.py --name "Albert Einstein" --topic "science"
+python ./app/main.py --name "Albert Einstein" --topic "science" --avatar-prompt "Albert Einstein"
 ```
 
 ## License

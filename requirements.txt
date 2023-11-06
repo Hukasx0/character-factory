@@ -1,9 +1,10 @@
 aichar
 tqdm
-sdkit
-torch
-argparse
-langchain
-ctransformers[cuda]
+torch==2.0.0
+torchvision
+torchaudio
 torchtext==0.6.0
-
+sdkit
+argparse
+ctransformers
+langchain
