@@ -18,6 +18,9 @@ def prepare_llm():
     global llm
     folder_path = 'models'
     model_url = 'https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_K_M.gguf'
+    # TODO: Swap LLM model and prompt format from Mistral to Zephyr
+    # Why? After brief testing, I found that Zephyr would return better quality responses
+    # model_url = 'https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q4_K_M.gguf'
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     llm_model_name = os.path.join(folder_path, os.path.basename(model_url))
