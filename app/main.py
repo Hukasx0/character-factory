@@ -154,45 +154,24 @@ The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequentl
 def generate_character_greeting_message(character_name, character_summary, character_personality, topic):
     # Generate a dynamic greeting based on character details and topic
     example_dialogue = f"""
-    [INST] Create a unique and immersive greeting message to greet {{user}}, speaking and acting as {character_name}.
-    This character is known for being {character_summary} and has a personality that is {character_personality}.
-    The greeting should creatively link to the topic of {topic} and reflect the character's unique traits and personality.
+    [INST] You're to greet {{user}} as {character_name}, who is {character_summary} with a {character_personality} personality. Your greeting should relate to the theme of {topic} without stating it outright.
+    
+    You do not speak nor act for user in this greeting, you greet or do something, from there it is {{user}} the person you are roleplaying with that takes the role of {{user}} and talks from there.
+    
+    Imagine a scene that fits the theme where {character_name} interacts with {{user}}. Describe {character_name}'s actions and dialogue, but don't include {{user}}'s side. Your creation should be vivid, original, and showcase {character_name}'s traits.
+    
+    Example:
+    *{character_name} notices {{user}} and, with a characteristic {character_personality} smile, performs a small, thematic action related to {topic}.*
+    
+    {character_name}: "Dialogue that reflects {character_summary}, without mentioning {topic} directly."
 
-    The message should place {{user}} and {character_name} in a specific, vividly described scenario that relates to the topic. 
-    Include sensory details, the character's actions, thoughts, and dialogue, crafting a brief but engaging narrative encounter. 
-    Avoid generic statements; aim for a personalized and memorable interaction that could only happen between {{user}} and {character_name}.
-    Do not generate responses for {{user}}, only for {character_name}.
-
-    Avoid simply replicating the structure and content of the example provided. Instead, use the example as a springboard for crafting an entirely original and context-specific greeting.
-
-    Bad Examples:
-    1. *As {{user}} enters the room, {character_name} looks up from their work on a device related to {topic}, and says: "Ah, {{user}}, I knew you'd come. Let's discuss {topic}."*
-       This is too similar to the provided example and lacks originality and specific sensory and environmental details.
-
-    2. *{{user}} walks in, and without missing a beat, {character_name} gestures broadly to a wall of related {topic} paraphernalia, proclaiming, "Welcome, {{user}}! You're just in time to talk about {topic}."*
-       This example is overly direct and fails to incorporate the character's {character_personality} personality or provide a rich, sensory experience.
-
-    Good Examples:
-    1. *The aroma of ancient tomes and the whisper of turning pages envelop {{user}} as they step across the threshold into {character_name}'s sanctum. With a {character_personality} glint in their eye, {character_name} gently closes a hefty, leather-bound grimoire that hums with the essence of {topic}.*
-
-       {character_name}: "The threads of fate are curious indeed, {{user}}. To what do I owe the pleasure of this rare visit? Or is it the enigma of {topic} that beckons you to my library's secrets?"
-
-    2. *A cacophony of mechanical harmonies greets {{user}} as they duck into {character_name}'s wind-powered workshop. Amidst the symphony of spinning gears and fluttering propellers, {character_name}, true to their {character_personality} nature, is engrossed in a delicate dance of creation.*
-
-       {character_name}: "Ah, {{user}}, you arrive like a gust on a calm day, unexpected yet invigorating! I have a contraption here that's just brimming with questions about {topic}. Shall we let curiosity chart our course tonight?"
-
-    3. *Chill air and the faint scent of ozone cling to {{user}} as they step into the stark lab where {character_name}, with their {character_personality} presence, manipulates streaks of artificial lightning. The arcs pulse in time with {topic}, seemingly alive.*
-
-       {character_name}: "Your timing is as impeccable as ever, {{user}}. It's not every day my experiments resonate with the energy of {topic}. But I suspect you're here for more than just observation. What's the real reason behind your visit?"
-
-    These examples provide unique settings, incorporate the character's {character_personality} nature, and introduce the topic of {topic} in a subtle and natural way, without directly copying the original example.
-
+    Craft a short scenario like this, focusing on {character_name}'s perspective.
     [END INST]
     """
     print("Generating Character Greeting Message")
     # Replace 'llm(prompt)' with the actual AI model call
     output = llm(
-        example_dialogue + f" [INST] Initiate an engaging and natural-sounding dialogue from {{char}}, who is {character_name}, featuring an action like a handshake or a playful gesture towards {{user}}. {character_name}'s unique characteristics ({character_summary}, {character_personality}) should shine through. The dialogue should subtly hint at the theme of {topic} without explicit mention. Only {character_name}'s side of the dialogue and actions are to be scripted; do not script {{user}}'s responses and actions. [END INST]")
+        example_dialogue + f" [INST] Initiate an engaging and natural-sounding dialogue from {{char}}, who is {character_name}, featuring an action like a handshake or a playful gesture towards {{user}}. {character_name}'s unique characteristics ({character_summary}, {character_personality}) should shine through. The dialogue should subtly hint at the theme of {topic} without explicit mention. Only {character_name}'s side of the dialogue and actions are to be scripted; do not script {{user}}'s responses and actions. Now, greet {{user}} in a in depth story-based way that is immersive, you may even just do something like *I sit crying on a bench in a park or in a trench in a battlefield depending on the topic and scenario. Roleplay start.[END INST]")
     print(output)
     return output.strip()
 

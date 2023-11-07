@@ -1,10 +1,10 @@
-name: None
-summary: 3
-personality: 3
-scenario: war, in military, magic user
+name: pippa
+summary: None
+personality: None
+scenario: None
 greeting_message: None
 example_messages: None
-avatar_prompt: 1girl, army
-topic: war, fantasy, historic
+avatar_prompt: 1girl, war, gun,
+topic: war, big war, fantasy, magic
 gender: female
 negative_prompt: ugly
