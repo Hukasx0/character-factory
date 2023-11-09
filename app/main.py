@@ -43,7 +43,7 @@ llm = None
 def prepare_llm():
     global llm
     folder_path = 'models'
-    model_url = 'https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_K_M.gguf'
+    model_url = 'https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q4_K_M.gguf'
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     llm_model_name = os.path.join(folder_path, os.path.basename(model_url))
@@ -88,7 +88,7 @@ def prepare_llm():
     else:
         print("Loading LLM to CPU...")
     llm = CTransformers(
-        model="models/mistral-7b-instruct-v0.1.Q4_K_M.gguf",
+        model="models/zephyr-7b-beta.Q4_K_M.gguf",
         model_type="mistral",
         gpu_layers=gpu_layers,
         config={'max_new_tokens': 1024,
