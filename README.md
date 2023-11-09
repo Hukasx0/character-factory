@@ -1,4 +1,4 @@
-# Character factory
+# Character factory With "enhanced"/alternative generation system
 
 <a target="_blank" href="https://colab.research.google.com/drive/1JqkrtFXKalcmuMvST2VltoS1UVwoQINH">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
