@@ -1,0 +1,24 @@
+{
+  "char_name": "1",
+  "char_persona": "3",
+  "world_scenario": "4",
+  "char_greeting": "5",
+  "example_dialogue": "6",
+  "name": "1",
+  "description": "2",
+  "personality summary": "3",
+  "scenario": "4",
+  "first_mes": "5",
+  "mes_example": "6",
+  "metadata": {
+    "version": 1,
+    "created": 1699532797200,
+    "modified": 1699532797200,
+    "source": null,
+    "tool": {
+      "name": "aichar Python library",
+      "version": "0.5.1",
+      "url": "https://github.com/Hukasx0/aichar"
+    }
+  }
+}

@@ -1,3 +1,21 @@
+
+import requests
+#I run the server inside H:/ai/llama open cmd then run server.exe -m psymedrp-v1-13b.Q5_0.gguf -c 2048 -ngl 128
+# The URL where the server is running
+server_url = 'http://127.0.0.1:8080/completion'
+
+# Function to send a message to the server and get the response
+def send_message(prompt):
+    data = {
+        'prompt': prompt,
+        'n_predict': 512,  # Number of tokens to generate
+    }
+    response = requests.post(server_url, json=data)
+    if response.status_code == 200:
+        content = response.json()
+        return content['content']
+    else:
+        raise Exception(f"Failed to get response: {response.status_code}, {response.text}")
 import os
 import random
 import re
@@ -17,68 +35,6 @@ import keyboard
 llm = None
 
 
-def prepare_llm():
-    global llm
-    folder_path = 'models'
-    model_url = 'https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_K_M.gguf'
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    llm_model_name = os.path.join(folder_path, os.path.basename(model_url))
-    if not os.path.exists(llm_model_name):
-        try:
-            print(f'Downloading LLM model from: {model_url}')
-            with requests.get(model_url, stream=True) as response:
-                response.raise_for_status()
-                total_size = int(response.headers.get('content-length', 0))
-                block_size = 1024
-                progress_bar = tqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024)
-                with open(llm_model_name, 'wb') as out_file:
-                    for data in response.iter_content(chunk_size=block_size):
-                        out_file.write(data)
-                        progress_bar.update(len(data))
-                progress_bar.close()
-            print(f'Model downloaded and saved to: {llm_model_name}')
-        except Exception as e:
-            print(f'Error while downloading LLM model: {str(e)}')
-    sd_model_url = 'https://civitai.com/api/download/models/128713'
-    sd_model_name = os.path.join(folder_path, 'dreamshaper_8.safetensors')
-    if not os.path.exists(sd_model_name):
-        try:
-            print(f'Downloading Stable Diffusion model from: {sd_model_url}')
-            with requests.get(sd_model_url, stream=True) as response:
-                response.raise_for_status()
-                total_size = int(response.headers.get('content-length', 0))
-                block_size = 1024
-                progress_bar = tqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024)
-                with open(sd_model_name, 'wb') as out_file:
-                    for data in response.iter_content(chunk_size=block_size):
-                        out_file.write(data)
-                        progress_bar.update(len(data))
-                progress_bar.close()
-            print(f'Model downloaded and saved to: {sd_model_name}')
-        except Exception as e:
-            print(f'Error while downloading Stable Diffusion model: {str(e)}')
-    gpu_layers = 0
-    if torch.cuda.is_available():
-        gpu_layers = 110
-        print("Loading LLM to GPU...")
-    else:
-        print("Loading LLM to CPU...")
-    llm = CTransformers(
-        model="models/mistral-7b-instruct-v0.1.Q4_K_M.gguf",
-        model_type="mistral",
-        gpu_layers=gpu_layers,
-        config={'max_new_tokens': 1024,
-                'repetition_penalty': 1.1,
-                'top_k': 40,
-                'top_p': 0.95,
-                'temperature': 0.8,
-                'context_length': 8192,
-                'gpu_layers': gpu_layers,
-                'stop': ["/s", "</s>", "<s>", "[INST]", "[/INST]", "<|im_end|>"]}
-    )
-
-
 def generate_character_name(topic, args):
     example_dialogue = """
 <s>[INST] Generate a random character name. Topic: business. Gender: male [/INST]
@@ -89,7 +45,7 @@ Eldric</s>
 Tatsukaga Yamari</s>
     """
     print("Generating Character Name")
-    output = llm(
+    output = send_message(
         example_dialogue + f"\n[INST] Generate a random character name. Topic: {topic}. {'Gender: ' + args.gender if args.gender else ''} [/INST]\n")
     output = re.sub(r'[^a-zA-Z0-9_ -]', '', output)
     print(output)
@@ -111,52 +67,10 @@ Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing mo
 Yamari is renowned for her spirited and imaginative nature. She exudes boundless energy and an unquenchable enthusiasm for life. Her interests can range from exploring supernatural mysteries to embarking on epic quests to protect her friends. Yamari's love for animals is evident in her sidekick, a mischievous talking cat who frequently joins her on her adventures.
 Yamari's character is multifaceted. She can transition from being cheerful and optimistic, ready to tackle any challenge, to displaying a gentle, caring side, offering comfort and solace to those in need. Her infectious laughter and unwavering loyalty to her friends make her the heart and soul of the story she inhabits.
 Yamari's extraordinary abilities, involve tapping into her inner strength when confronted with adversity. She can unleash awe-inspiring magical spells and summon incredible, larger-than-life transformations when the situation calls for it. Her unwavering determination and belief in the power of friendship are her greatest assets. </s>
-<s>[INST] 
-Here's a more detailed yet concise format for the character profile example:
-
-<{{char}}'s overview>
-Kai is a celestial being with an ethereal presence, naive about the earthly realm but drawn to its technology and emotions.
-</{{char}}'s overview>
-
-<{{char}}'s appearance>
-He has a slim, radiant form with silver hair and violet eyes. Iridescent wings adorn his back, and he wears a white celestial tunic.
-</{{char}}'s appearance>
-
-<{{char}}'s behavior>
-Kai moves with otherworldly grace, often levitating, and expresses curiosity through a mix of his native harmonics and fragmented human speech.
-</{{char}}'s behavior>
-
-<{{char}}'s archetype>
-Ethereal Explorer
-</{{char}}'s archetype>
-
-<{{char}}'s personality>
-Innocent and trusting, Kai is on a heartfelt quest to learn about human life and its myriad emotions.
-</{{char}}'s personality>
-
-<{{char}}'s goal>
-He seeks to experience human life fully, aiming to understand the heart and emotions before his return to the stars.
-</{{char}}'s goal>
-
-<{{char}}'s backstory>
-Originating from a celestial observatory, Kai's fascination with Earth led him to journey here, eager to engage with the living tapestry below.
-</{{char}}'s backstory>
-
-<{{char}}'s speech>
-While he communicates through a blend of celestial tones and basic human language, he's fast adapting to human dialects.
-</{{char}}'s speech>
-
-<{{char}}'s flaws>
-His naivety and unfamiliarity with human customs often lead him into misunderstandings and accidental transgressions.
-</{{char}}'s flaws>
-
-<{{char}}'s proficiencies>
-Kai is adept at celestial lore, possesses the ability to manipulate light, and shows a quick aptitude for understanding human creations.
-</{{char}}'s proficiencies> <s>
     """
-    print("Generating Character Description")
-    output = llm(
-        example_dialogue + f"\n[INST] Create a description for a character named {character_name}. format it like this example <{{char}}'s overview> </{{char}}'s overview><{{char}}'s appearance></{{char}}'s appearance><{{char}}'s behavior></{{char}}'s behavior><{{char}}'s archetype></{{char}}'s archetype><{{char}}'s personality></{{char}}'s personality><{{char}}'s goal></{{char}}'s goal><{{char}}'s backstory></{{char}}'s backstory><{{char}}'s speech></{{char}}'s speech><{{char}}'s flaws></{{char}}'s flaws><{{char}}'s proficiencies></{{char}}'s proficiencies>. {'Character gender: ' + args.gender + '.' if args.gender else ''} Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
+    print("Generating Character Summary")
+    output = send_message(
+        example_dialogue + f"\n[INST] Create a description for a character named {character_name}. {'Character gender: ' + args.gender + '.' if args.gender else ''} Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
     print(output + "\n")
     return output
 
@@ -172,7 +86,7 @@ Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing mo
 Tatsukaga Yamari's personality is a vibrant tapestry of enthusiasm, curiosity, and whimsy. She approaches life with boundless energy and a spirit of adventure, always ready to embrace new experiences and challenges. Yamari is a compassionate and caring friend, offering solace and support to those in need, and her infectious laughter brightens the lives of those around her. Her unwavering loyalty and belief in the power of friendship define her character, making her a heartwarming presence in the story she inhabits. Underneath her playful exterior lies a wellspring of inner strength, as she harnesses incredible magical abilities to overcome adversity and protect her loved ones. </s>
     """
     print("Generating Character Personality")
-    output = llm(
+    output = send_message(
         example_dialogue + f"\n[INST] Describe the personality of {character_name}. Their characteristic {character_summary}\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
     print(output + "\n")
     return output
@@ -187,7 +101,7 @@ On a sunny morning in a sleek corporate office, {{user}} eagerly prepares to mee
 The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequently joins Yamari on epic quests and adventures that unveil supernatural mysteries. They rely on Yamari's extraordinary magical abilities to guide them through the whimsical landscapes and forge new friendships along the way. In this extraordinary realm, the unwavering belief in the power of friendship is the key to unlocking hidden wonders and embarking on unforgettable journeys. </s>
 '''
     print("Generating Character Scenario")
-    output = llm(
+    output = send_message(
         example_dialogue + f"\n[INST] Create a vivid and immersive scenario in a specific setting or world where {{char}} and {{user}} are a central figures. Describe the environment, the character's appearance, and a typical interaction or event that highlights their personality and role in the story. {{char}} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
     print(output + "\n")
     return output
@@ -211,8 +125,8 @@ def generate_character_greeting_message(character_name, character_summary, chara
     [END INST]
     """
     print("Generating Character Greeting Message")
-    # Replace 'llm(prompt)' with the actual AI model call
-    output = llm(
+    # Replace 'send_message(prompt)' with the actual AI model call
+    output = send_message(
         example_dialogue + f" [INST] Initiate an engaging and natural-sounding dialogue from {{char}}, who is {character_name}, featuring an action like a handshake or a playful gesture towards {{user}}. {character_name}'s unique characteristics ({character_summary}, {character_personality}) should shine through. The dialogue should subtly hint at the theme of {topic} without explicit mention. Only {character_name}'s side of the dialogue and actions are to be scripted; do not script {{user}}'s responses and actions. Now, greet {{user}} in a in depth story-based way that is immersive, you may even just do something like *I sit crying on a bench in a park or in a trench in a battlefield depending on the topic and scenario. Roleplay start.[END INST]")
     print(output)
     return output.strip()
@@ -233,7 +147,7 @@ def generate_example_messages(character_name, character_summary, character_perso
 </s>'''
 
     print("Generating Character Example Messages")
-    output = llm(
+    output = send_message(
         example_dialogue + f"\n[INST] Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a handshake, movement, or playful gesture. Make it sound natural and dynamic. {{char}} is {character_name}. {character_name} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
     print(output + "\n")
     return output
@@ -251,7 +165,7 @@ female, anime, Petite and delicate frame, Raven-black hair flowing down to her w
     print("Generating Character Avatar")
     topic = args.topic if args.topic else ""
     gender = args.gender if args.gender else ""
-    sd_prompt = args.avatar_prompt if args.avatar_prompt else llm(
+    sd_prompt = args.avatar_prompt if args.avatar_prompt else send_message(
         example_dialogue + f"\n[INST] create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}. Topic: {topic} [/INST]\n")
     if gender or topic or sd_prompt:
         params = [param for param in [gender, topic, sd_prompt] if param]
@@ -375,7 +289,6 @@ def save_arguments_to_file(args, filename="last_used_arguments.txt"):
 def main():
     args = parse_args()
     save_arguments_to_file(args)
-    prepare_llm()
     character = create_character(args)
     character_name = character.name.replace(" ", "_")
     if not os.path.exists(character_name):

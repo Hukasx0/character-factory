@@ -6,7 +6,7 @@ set "args="
 set /p "name=Enter character name (press Enter to skip): "
 if not "!name!"=="" set "args=!args! --name "!name!""
 
-set /p "summary=Enter character Description (press Enter to skip): "
+set /p "summary=Enter character summary (press Enter to skip): "
 if not "!summary!"=="" set "args=!args! --summary "!summary!""
 
 set /p "personality=Enter character personality (press Enter to skip): "
@@ -33,6 +33,6 @@ if not "!negative_prompt!"=="" set "args=!args! --negative-prompt "!negative_pro
 set /p "gender=Enter character gender (male, female, etc... or press Enter for no preference): "
 if not "!gender!"=="" set "args=!args! --gender "!gender!""
 
-echo Running command: python ./app/main.py !args!
-python ./app/main.py !args!
+echo Running command: python ./app/llamaccp.py !args!
+python ./app/llamaccp.py !args!
 if %ERRORLEVEL% neq 0 pause
