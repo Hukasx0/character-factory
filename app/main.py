@@ -15,14 +15,15 @@ import threading
 import keyboard
 
 # TO DO
-'''
-def generate_character_name(topic, args) + def input_with_timeout(prompt, timeout) + def create_character(args): Resolve the issue where the script fails to proceed when it's out of focus, following the name sanitization, due to the keyboard not being a system-wide feature.
-#########################################
+'''def generate_character_name(topic, args) + def input_with_timeout(prompt, timeout) + def create_character(args): 
+Resolve the issue where the script fails to proceed when it's out of focus, following the name sanitization, 
+due to the keyboard not being a system-wide feature. 
+######################################### 
 def generate_character_personality(character_name, character_summary, topic)
  + 
 def generate_character_scenario(character_summary, character_personality, topic)
  + 
-def generate_character_greeting_message(character_name, character_summary, character_personality, topic)
+def generate_character_greeting_message(character_name, character_summary, character_personality, topic) 
  + 
 def generate_character_avatar(character_name, character_summary, args)
 
