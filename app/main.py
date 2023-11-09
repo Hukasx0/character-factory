@@ -130,6 +130,7 @@ def generate_topic_if_empty(args):
     <|user|> create a nice topic for this story / roleplay
     <|assistant|> "Anime: Magic, quests, Harem."
     
+    
     <|user|> create a nice topic for this story/roleplay
     <|assistant|> "Science Fiction: Space exploration, alien diplomacy, and wormholes."
 
@@ -488,8 +489,6 @@ def main():
     prepare_llm()
     generated_gender = generate_gender_if_empty(args)
     generated_topic = generate_topic_if_empty(args)
-    generated_gender
-    generated_topic
     print("Gender is " + args.gender)
     print("Topic is" + args.topic)
     character = create_character(args)
