@@ -170,7 +170,6 @@ def generate_topic_if_empty(args):
         # If 'gender' is not in args or is empty, choose a random one from the list
         generated_topic = llm(topic_example + "[INST]Select a topic for this roleplay using the examples, keep it simple, use a few topics/genres like 'anime, raider gangs' that's enough. [/INST]\n<|assistant|>")
         setattr(args, 'topic', generated_topic)  # Setting the generated topic in args
-        print(args.topic)
         return generated_topic
 
 
