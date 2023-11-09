@@ -430,6 +430,9 @@ def create_character(args):
 
     example_messages = args.example_messages if args.example_messages else generate_example_messages(name, summary,
                                                                                                      personality, topic)
+    # Second pass to refine the greeting message using the revised rules
+    # Ensure that the name, summary, personality, and topic are still passed if they are needed in the second pass.
+    greeting_message = generate_character_greeting_message_second_pass(name, greeting_message, summary, personality, topic)
     return aichar.create_character(
         name=name,
         summary=summary,
