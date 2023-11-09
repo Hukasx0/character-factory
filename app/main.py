@@ -26,7 +26,7 @@ def generate_character_greeting_message(character_name, character_summary, chara
  + 
 def generate_character_avatar(character_name, character_summary, args)
 
-need to be improved and work together more nicely
+need to be improved and work together more nicel
 #########################################
 '''
 
