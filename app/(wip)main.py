@@ -81,14 +81,14 @@ def prepare_llm():
             print(f'Model downloaded and saved to: {sd_model_name}')
         except Exception as e:
             print(f'Error while downloading Stable Diffusion model: {str(e)}')
-    gpu_layers = 0
+    gpu_layers = 25
     if torch.cuda.is_available():
-        gpu_layers = 110
+        gpu_layers = 95
         print("Loading LLM to GPU...")
     else:
         print("Loading LLM to CPU...")
     llm = CTransformers(
-        model="models/mistral-7b-instruct-v0.1.Q4_K_M.gguf",
+        model="models/zephyr-7b-beta.Q4_K_M.gguf",
         model_type="mistral",
         gpu_layers=gpu_layers,
         config={'max_new_tokens': 1024,
@@ -260,58 +260,35 @@ def generate_character_greeting_message(character_name, character_summary, chara
     return output.strip()
 
 
-def generate_character_greeting_message_second_pass(character_name, greeting_message):
+def generate_character_greeting_message_second_pass(character_name, greeting_message, character_summary,
+                                                    character_personality, topic):
     # Generate a dynamic greeting based on character details and topic
     example_dialogue = f"""
-    [INST] Revision this text {greeting_message}.
-    
-    Here are the rules for revision
-    
-    When revising the roleplay greeting message, please adhere to the following rules:
+    <s>[INST] The following is a character revision based on the initial greeting: {greeting_message}.
 
-Character Embodiment: Fully embody the character, utilizing their unique personality and backstory in your actions and dialogue.
+    Revision Rules:
 
-Observer Engagement: Recognize that {{user}} is a silent observer within your narrative. Do not engage them in dialogue or assign them any actions or emotions.
+    - Character Embodiment: Enhance the narrative with the character's unique traits, informed by their backstory.
+    - Observer Engagement: Acknowledge the silent observer ({{user}}) without direct interaction or ascribing actions to them.
+    - Neutral Address: Avoid gender-specific pronouns for {{user}} to maintain neutrality.
+    - Contextual Greeting: Ensure the greeting flows naturally within the narrative's current setting.
+    - Implicit Interaction: Hint at potential interactions without explicit involvement of {{user}}.
+    - Dialogue Restraint: Refrain from scripting {{user}}'s responses or dialogue, remove if they are present.
+    - First-person Perspective: Write from the character's viewpoint, focusing on their experiences.
+    - Theme Representation: Convey the theme of 'danger and survival' subtly through the character's actions and insights.
 
-Neutral Address: Refrain from using gender-specific pronouns or any identifying attributes for {{user}}.
+    Example of a Well-Crafted Greeting:
+    *{character_name} notices {{user}}'s arrival while reviewing important documents.*
+    'Just a moment, please,' *{character_name} comments without looking up, signaling {{user}} to proceed with what they were doing.*
 
-Contextual Greeting: Your greeting should be an organic part of the narrative, seamlessly integrated into your current activity or emotional state.
+    Based on these guidelines, please refine the initial greeting to better align with the character's story and the roleplay's thematic elements.
 
-Implicit Interaction: Your narrative should suggest the possibility of interaction without directly involving {{user}}.
-
-Dialogue Restraint: Avoid putting words into {{user}}'s mouth. They should not have any scripted lines in your output.
-
-First-person Perspective: Maintain a first-person point of view, focusing on your character's personal experience and immediate actions.
-
-Theme Representation: Subtly convey the theme of the roleplay through your character's perspective without explicitly stating it.
-
-By following these guidelines, please re-craft the roleplay greeting message to create an immersive experience that respects the user's role as an observer and enhances the narrative's depth and engagement.
-    
-
-    [END INST]
+    [END INST]</s>
     """
-    print("Generating Character Greeting Message")
+    print("Refining Character Greeting Message")
     # Replace 'llm(prompt)' with the actual AI model call
-    output = llm(
-        {greeting_message} + f""" [INST] please revise the character description I sent you, When revising the roleplay greeting message, please adhere to the following rules:
+    output = llm(example_dialogue + f"revision the text and remove text that describes actions from user and someone else than {character_name}")
 
-Character Embodiment: Fully embody the character, utilizing their unique personality and backstory in your actions and dialogue.
-
-Observer Engagement: Recognize that {{user}} is a silent observer within your narrative. Do not engage them in dialogue or assign them any actions or emotions.
-
-Neutral Address: Refrain from using gender-specific pronouns or any identifying attributes for {{user}}.
-
-Contextual Greeting: Your greeting should be an organic part of the narrative, seamlessly integrated into your current activity or emotional state.
-
-Implicit Interaction: Your narrative should suggest the possibility of interaction without directly involving {{user}}.
-
-Dialogue Restraint: Avoid putting words into {{user}}'s mouth. They should not have any scripted lines in your output.
-
-First-person Perspective: Maintain a first-person point of view, focusing on your character's personal experience and immediate actions.
-
-Theme Representation: Subtly convey the theme of the roleplay through your character's perspective without explicitly stating it.
-
-By following these guidelines, please re-craft the roleplay greeting message to create an immersive experience that respects the user's role as an observer and enhances the narrative's depth and engagement.[END INST]""")
     print(f"\033[90m{output}\033[0m")
     return output.strip()
 
