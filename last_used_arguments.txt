@@ -1,7 +1,7 @@
 name: None
-summary:  
-personality:  
-scenario:  
+summary: None
+personality: None
+scenario: None
 greeting_message: None
 example_messages: None
 avatar_prompt: None

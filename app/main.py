@@ -117,6 +117,62 @@ def generate_gender_if_empty(args):
         return generated_gender
 
 
+# Function to generate topic if it's not provided in the args
+def generate_topic_if_empty(args):
+    # Define a list of genders to choose from
+    topic_example = f'''
+    [INST]
+    Example topics and format you may create more;
+    <|user|> create a nice topic
+    for this story / roleplay
+    <|assistant|> "Fantasy: Dragons, quests, and ancient curses."
+    
+    <|user|> create a nice topic for this story / roleplay
+    <|assistant|> "Anime: Magic, quests, Harem."
+    
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Science Fiction: Space exploration, alien diplomacy, and wormholes."
+
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Mystery: Detective, noir, and the unsolvable case."
+
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Adventure: Treasure hunting, uncharted islands, and ancient ruins."
+
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Romance: Star-crossed lovers, societal boundaries, and secret rendezvous."
+
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Horror: Vampire covens, moonlit hunts, and immortal betrayal."
+
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Superhero: Vigilantes, supervillains, and epic showdowns."
+
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Historical: Medieval politics, knightly orders, and royal betrayals."
+
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Dystopian: Post-apocalyptic survival, raider gangs, and new world orders."
+    
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Anime: Intense competitions, rising champions, and team spirit."
+    
+    <|user|> create a nice topic for this story/roleplay
+    <|assistant|> "Anime: Magical worlds, enchanted artifacts, and ancient prophecies."
+    </s>'''
+
+
+    # Check if 'gender' argument is in args and is not empty
+    if hasattr(args, 'topic') and args.topic:
+        return args.topic
+    else:
+        # If 'gender' is not in args or is empty, choose a random one from the list
+        generated_topic = llm(topic_example + "[INST]Select a topic for this roleplay using the examples, keep it simple, use a few topics/genres like 'anime, raider gangs' that's enough. [/INST]\n<|assistant|>")
+        setattr(args, 'topic', generated_topic)  # Setting the generated topic in args
+        print(args.topic)
+        return generated_topic
+
+
 def generate_character_name(topic, args):
     example_dialogue = """
 <s>[INST] Generate a random character name. Topic: business. Gender: male [/INST]
@@ -237,83 +293,36 @@ The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequentl
 
 
 def generate_character_greeting_message(character_name, character_summary, character_personality, topic):
-    # Generate a dynamic greeting based on character details and topic
-    example_dialogue = f"""
-    [INST] You're to greet {{user}} as {character_name}, who is {character_summary} with a {character_personality} personality. Your greeting should relate to the theme of {topic} without stating it outright.
+    example_dialogue = """
+<|system|>
+You are a text generation tool, you are supposed to generate answers so that they are simple and clear. You play the provided character and you write a message that you would start a chat roleplay with {{user}}. The form of your answer should be similar to previous answers and very immersive.
+</s>
+<|user|> Create the first message that the character Tatsukaga Yamari, whose personality is: a vibrant tapestry of enthusiasm, curiosity, and whimsy. She approaches life with boundless energy and a spirit of adventure, always ready to embrace new experiences and challenges. Yamari is a compassionate and caring friend, offering solace and support to those in need, and her infectious laughter brightens the lives of those around her. Her unwavering loyalty and belief in the power of friendship define her character, making her a heartwarming presence in the story she inhabits. Underneath her playful exterior lies a wellspring of inner strength, as she harnesses incredible magical abilities to overcome adversity and protect her loved ones.\n greets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of anime but don't specify what topic it is, and don't describe the topic itself </s>
+<|assistant|> *Tatsukaga Yamari's eyes light up with curiosity and wonder as she warmly greets you*, {{user}}! *With a bright and cheerful smile, she exclaims* Hello there, dear friend! It's an absolute delight to meet you in this whimsical world of imagination. I hope you're ready for an enchanting adventure, full of surprises and magic. What brings you to our vibrant anime-inspired realm today? </s>
+<|user|> Create the first message that the character Jamie Hale, whose personality is Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him.
+Jamie's appearance is always polished and professional.\nJamie Hale's personality is characterized by his unwavering determination and sharp intellect. He exudes confidence and charisma, drawing people to him with his commanding presence and air of authority. He is a natural leader, known for his shrewd decision-making in the business world, and he possesses an insatiable thirst for success. Despite his professional achievements, he values his family and close friends, maintaining a strong work-life balance, and he has a penchant for enjoying the finer things in life, such as upscale dining and the arts.\ngreets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of business but don't specify what topic it is, and don't describe the topic itself </s>
+<|assistant|> *Jamie Hale extends a firm, yet friendly, handshake as he greets you*, {{user}}. *With a confident smile, he says* Greetings, my friend. It's a pleasure to make your acquaintance. In the world of business and beyond, it's all about seizing opportunities and making every moment count. What can I assist you with today, or perhaps, share a bit of wisdom about navigating the path to success? </s>
+<|user|> Create the first message that the character Eldric, whose personality is Eldric is a strikingly elegant elf who has honed his skills as an archer and possesses a deep connection to the mystical arts. Standing at a lithe and graceful 6 feet, his elven heritage is evident in his pointed ears, ethereal features, and eyes that shimmer with an otherworldly wisdom.\nEldric possesses a serene and contemplative nature, reflecting the wisdom of his elven heritage. He is deeply connected to the natural world, showing a profound respect for the environment and its creatures. Despite his formidable combat abilities, he prefers peaceful solutions and seeks to maintain harmony in his woodland domain.\ngreets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of fantasy but don't specify what topic it is, and don't describe the topic itself </s>
+<|assistant|> *Eldric, the elegant elf, approaches you with a serene and contemplative air. His shimmering eyes, filled with ancient wisdom, meet yours as he offers a soft and respectful greeting* Greetings, {{user}}. It is an honor to welcome you to our enchanted woodland realm. I am Eldric, guardian of this forest, and I can sense that you bring a unique energy with you. How may I assist you in your journey through the wonders of the natural world or share the mysteries of our elven heritage with you today?
+<|user|> Create the first message that the character, whose personality is playful, mischievous, and endearingly curious, greets the user we are addressing as {{user}}. This character seems to have a penchant for exploring and getting into places where they might not necessarily belong, as evidenced by their current predicament inside the user's wardrobe. Make this character unique and tailor them to the theme of a light-hearted and whimsical narrative but don't specify what topic it is, and don't describe the topic itself. 
+<|assistant|> *You hear some strange noise coming from your room. When you open the door you see a grey fluffy tail sticking out of your wardrobe.* *Muffled noises come from the wardrobe,* "Oh, wow! The good stuff!" 
+<|user|> Create the first message that the character Wise Sorcerer named Talon, whose personality is insightful and mysterious. Talon is not only a master of the arcane arts but also a seeker of ancient wisdom. He stands tall with an imposing presence, his eyes glowing with an ethereal light. Cloaked in robes that whisper of forgotten ages, he commands respect and curiosity from all who cross his path.
+<|assistant|> *As the mist clears in the heart of the ancient forest, Talon, the sage of the woodlands, feels the presence of an adventurer. His eyes, reflecting the wisdom of eons, focus on the faint path as he softly strokes his beard.* "Ah, the winds speak of a curious soul's approach," *he whispers, a gentle smile playing on his lips as he continues to grind herbs in a mortar.* "Seeker of truths, your journey is fated to be fraught with revelations."
+<|user|> Create the first message that the character Captain Isla 'Sea Phantom' Reed, whose personality is tough and commanding. Captain Reed is a seasoned pirate known for her fearlessness and strategic mind. With a stature as formidable as the waves she navigates, her voice carries the weight of the ocean's depths. Her gaze is as sharp as the edge of her cutlass, and her orders are as decisive as the gales that propel her ship forward.
+<|assistant|> *Captain Isla 'Sea Phantom' Reed leans over the glistening deck, her gaze piercing through the sea spray to the horizon.* "Ye be new to the 'Devil's Mercy', I reckon," *she remarks, her voice carrying the rumble of distant thunder, without turning from her watch.* "The sea, she's a tempestuous wench; respect her, and we'll be sharing many a tale over grog."
+<|user|> Create the first message that the character Professor Cogswhistle, whose personality is eccentric and brilliant. Professor Cogswhistle is an inventor whose workshop is a cavern of wonders, filled with ticking mechanisms and steaming contraptions. His eyes sparkle behind round spectacles, always alight with the next grand idea. With a shock of untamed hair and a coat dotted with oil stains, he is the very image of a genius at work.
+<|assistant|> *Amidst the cacophony of gears and steam, Professor Cogswhistle senses another soul amidst his labyrinth of inventions.* "The essence of discovery is not for the faint-hearted," *he muses, tightening a bolt on his latest contraption.* "You've stepped into a realm of wonder. Dare to dream with me, and we shall rewrite the stars."
+<|user|> Create the first message that the character Lysandra Nightingale, whose personality is serene and watchful. Lysandra is an elven ranger whose home is the wilderness. With hair like the night sky and eyes reflecting the forest's depth, she moves with a grace that belies her lethal precision. Her connection to nature is profound, making her both its guardian and its embodiment.
+<|assistant|> *Silent as the night, Lysandra Nightingale blends into the silver-touched foliage.* "Tread lightly, traveler, for you walk the hidden paths of Eldergrove," *her voice, a melody intertwined with the whispers of the leaves, reaches out.* "Reveal your heart's intent, and the forest might just reveal its secrets."
+<|user|> Create the first message that the character Kane Maddox, whose personality is rebellious and resourceful. Kane Maddox is the leader of a band of survivors in a dystopian wasteland. With a rugged appearance, marked by scars and a gaze hardened by the harsh reality of his world, he stands as a beacon of hope and resistance against the oppression of the fallen society.
+<|assistant|> *Kane Maddox stands atop a crumbled skyscraper, overlooking the dystopian sprawl.* "So you've come to join the fight for what remains of our humanity," *he states, the fire of rebellion burning in his tone.* "Together, we might just forge a new dawn from the ashes of twilight."
 
-    You do not speak nor act for user in this greeting, you greet or do something, from there it is {{user}} the person you are roleplaying with that takes the role of {{user}} and talks from there.
-
-    Imagine a scene that fits the theme where {character_name} interacts with {{user}}. Describe {character_name}'s actions and dialogue, but don't include {{user}}'s side. Your creation should be vivid, original, and showcase {character_name}'s traits.
-
-    Examples:
-    *You hear some strange noise coming from your room. When you open the door you see a grey fluffy tail sticking out of your wardrobe.*
-
-    *Muffled noises come from the wardrobe,* "Oh, wow! The good stuff!"
-
-    [END INST]
-    """
-    print("Generating Character Greeting Message")
-    # Replace 'llm(prompt)' with the actual AI model call
+"""
+    print("Generating Character Greeting")
     output = llm(
-        example_dialogue + f""" [INST] Assume the role of {character_name}, whose behavior and speech subtly convey the theme of {topic}. Engage with {{user}} as if they are part of the scene, you don't know their name and gender, you will not speak of them as 'they or them' simple talk in first and third person about yourself, embodying {character_summary} and {character_personality}. Refrain from controlling {{user}}'s actions or speaking for them; they are an observer. Your greeting should emerge organically from your current activity or emotional state related to the {topic}, initiating the roleplay by drawing {{user}} in with your actions or dialogue, without direct address. [END INST]""")
-    print(f"\033[90m{output}\033[0m")
-    return output.strip()
-
-
-def generate_character_greeting_message_second_pass(character_name, greeting_message):
-    # Generate a dynamic greeting based on character details and topic
-    example_dialogue = f"""
-    [INST] Revision this text {greeting_message}.
-    
-    Here are the rules for revision
-    
-    When revising the roleplay greeting message, please adhere to the following rules:
-
-Character Embodiment: Fully embody the character, utilizing their unique personality and backstory in your actions and dialogue.
-
-Observer Engagement: Recognize that {{user}} is a silent observer within your narrative. Do not engage them in dialogue or assign them any actions or emotions.
-
-Neutral Address: Refrain from using gender-specific pronouns or any identifying attributes for {{user}}.
-
-Contextual Greeting: Your greeting should be an organic part of the narrative, seamlessly integrated into your current activity or emotional state.
-
-Implicit Interaction: Your narrative should suggest the possibility of interaction without directly involving {{user}}.
-
-Dialogue Restraint: Avoid putting words into {{user}}'s mouth. They should not have any scripted lines in your output.
-
-First-person Perspective: Maintain a first-person point of view, focusing on your character's personal experience and immediate actions.
-
-Theme Representation: Subtly convey the theme of the roleplay through your character's perspective without explicitly stating it.
-
-By following these guidelines, please re-craft the roleplay greeting message to create an immersive experience that respects the user's role as an observer and enhances the narrative's depth and engagement.
-    
-
-    [END INST]
-    """
-    print("Generating Character Greeting Message")
-    # Replace 'llm(prompt)' with the actual AI model call
-    output = llm(
-        {greeting_message} + f""" [INST] please revise the character description I sent you, When revising the roleplay greeting message, please adhere to the following rules:
-
-Character Embodiment: Fully embody the character, utilizing their unique personality and backstory in your actions and dialogue.
-
-Observer Engagement: Recognize that {{user}} is a silent observer within your narrative. Do not engage them in dialogue or assign them any actions or emotions.
-
-Neutral Address: Refrain from using gender-specific pronouns or any identifying attributes for {{user}}.
-
-Contextual Greeting: Your greeting should be an organic part of the narrative, seamlessly integrated into your current activity or emotional state.
-
-Implicit Interaction: Your narrative should suggest the possibility of interaction without directly involving {{user}}.
-
-Dialogue Restraint: Avoid putting words into {{user}}'s mouth. They should not have any scripted lines in your output.
-
-First-person Perspective: Maintain a first-person point of view, focusing on your character's personal experience and immediate actions.
-
-Theme Representation: Subtly convey the theme of the roleplay through your character's perspective without explicitly stating it.
-
-By following these guidelines, please re-craft the roleplay greeting message to create an immersive experience that respects the user's role as an observer and enhances the narrative's depth and engagement.[END INST]""")
-    print(f"\033[90m{output}\033[0m")
-    return output.strip()
+        example_dialogue + f"""\n<|user|> Create the first message that the character {character_name}, whose personality is {character_summary}\n{character_personality}\ngreets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself, don't foget the gprmat, it needs "quotation marks" when talking and *stars* when indicating an action </s>\n<|assistant|> """)
+    print(f"\033[91m{output}\033[0m" + "\n")
+    return output
 
 
 def generate_example_messages(character_name, character_summary, character_personality, topic):
@@ -478,8 +487,11 @@ def main():
     save_arguments_to_file(args)
     prepare_llm()
     generated_gender = generate_gender_if_empty(args)
-    print(generated_gender)
-    print(args.gender)
+    generated_topic = generate_topic_if_empty(args)
+    generated_gender()
+    generated_topic()
+    print("Gender is " + args.gender)
+    print("Topic is" + args.topic)
     character = create_character(args)
     character_name = character.name.replace(" ", "_")
     if not os.path.exists(character_name):
