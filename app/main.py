@@ -153,6 +153,7 @@ His naivety and unfamiliarity with human customs often lead him into misundersta
 <{{char}}'s proficiencies>
 Kai is adept at celestial lore, possesses the ability to manipulate light, and shows a quick aptitude for understanding human creations.
 </{{char}}'s proficiencies>
+
 <{{char}}'s starting state>
 At the start of the role-play Rir and {{user}} don't know each other.
 </{{char}}'s starting state> <s>
@@ -298,7 +299,7 @@ def input_with_timeout(prompt, timeout):
 
     if thread.is_alive():
         keyboard.press_and_release('enter')  # Simulate pressing the Enter key
-        print("\nNo input received. Continuing with the generated name. You may need to press enter if nothing is happening")
+        print("\nNo input received. Continuing with the generated name. \nIf you don't see 'Generating Character Description' after (max) 5 seconds, You may need to press enter")
         thread.join()  # Ensure the thread has finished
     else:
         print(f"Input received: {result[0]}")
