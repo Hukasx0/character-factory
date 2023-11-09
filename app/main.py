@@ -152,11 +152,14 @@ His naivety and unfamiliarity with human customs often lead him into misundersta
 
 <{{char}}'s proficiencies>
 Kai is adept at celestial lore, possesses the ability to manipulate light, and shows a quick aptitude for understanding human creations.
-</{{char}}'s proficiencies> <s>
+</{{char}}'s proficiencies>
+<{{char}}'s starting state>
+At the start of the role-play Rir and {{user}} don't know each other.
+</{{char}}'s starting state> <s>
     """
     print("Generating Character Description")
     output = llm(
-        example_dialogue + f"\n[INST] Create a description for a character named {character_name}. format it like this example <{{char}}'s overview> </{{char}}'s overview><{{char}}'s appearance></{{char}}'s appearance><{{char}}'s behavior></{{char}}'s behavior><{{char}}'s archetype></{{char}}'s archetype><{{char}}'s personality></{{char}}'s personality><{{char}}'s goal></{{char}}'s goal><{{char}}'s backstory></{{char}}'s backstory><{{char}}'s speech></{{char}}'s speech><{{char}}'s flaws></{{char}}'s flaws><{{char}}'s proficiencies></{{char}}'s proficiencies>. {'Character gender: ' + args.gender + '.' if args.gender else ''} Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
+        example_dialogue + f"\n[INST] Create a description for a character named {character_name}. format it like this example <{{char}}'s overview> </{{char}}'s overview><{{char}}'s appearance></{{char}}'s appearance><{{char}}'s behavior></{{char}}'s behavior><{{char}}'s archetype></{{char}}'s archetype><{{char}}'s personality></{{char}}'s personality><{{char}}'s goal></{{char}}'s goal><{{char}}'s backstory></{{char}}'s backstory><{{char}}'s speech></{{char}}'s speech><{{char}}'s flaws></{{char}}'s flaws><{{char}}'s proficiencies></{{char}}'s proficiencies><{{char}}'s starting state> </{{char}}'s starting state>. {'Character gender: ' + args.gender + '.' if args.gender else ''} Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
     print(output + "\n")
     return output
 
