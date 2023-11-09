@@ -15,10 +15,15 @@ import threading
 import keyboard
 
 # TO DO
-'''def generate_character_name(topic, args) + def input_with_timeout(prompt, timeout) + def create_character(args): 
+'''
+######################################### 
+
+def generate_character_name(topic, args) + def input_with_timeout(prompt, timeout) + def create_character(args): 
 Resolve the issue where the script fails to proceed when it's out of focus, following the name sanitization, 
 due to the keyboard not being a system-wide feature. 
+
 ######################################### 
+
 def generate_character_personality(character_name, character_summary, topic)
  + 
 def generate_character_scenario(character_summary, character_personality, topic)
@@ -28,15 +33,12 @@ def generate_character_greeting_message(character_name, character_summary, chara
 def generate_character_avatar(character_name, character_summary, args)
 
 need to be improved and work together more nicely
+
 #########################################
 '''
 
-
-
-
-
-
 llm = None
+
 
 def prepare_llm():
     global llm
@@ -100,6 +102,21 @@ def prepare_llm():
     )
 
 
+# Function to generate gender if it's not provided in the args
+def generate_gender_if_empty(args):
+    # Define a list of genders to choose from
+    genders = ['Male', 'Female']  # add more if you want to
+
+    # Check if 'gender' argument is in args and is not empty
+    if hasattr(args, 'gender') and args.gender:
+        return args.gender
+    else:
+        # If 'gender' is not in args or is empty, choose a random one from the list
+        generated_gender = random.choice(genders)
+        setattr(args, 'gender', generated_gender)  # Setting the generated gender in args
+        return generated_gender
+
+
 def generate_character_name(topic, args):
     example_dialogue = """
 <s>[INST] Generate a random character name. Topic: business. Gender: male [/INST]
@@ -113,7 +130,7 @@ Tatsukaga Yamari</s>
     output = llm(
         example_dialogue + f"\n[INST] Generate a random character name. Topic: {topic}. {'Gender: ' + args.gender if args.gender else ''} [/INST]\n")
     output = re.sub(r'[^a-zA-Z0-9_ -]', '', output)
-    print(output)
+    print(f"\033[93m{output}\033[0m")
     return output
 
 
@@ -169,6 +186,7 @@ While he communicates through a blend of celestial tones and basic human languag
 
 <{{char}}'s flaws>
 His naivety and unfamiliarity with human customs often lead him into misunderstandings and accidental transgressions.
+
 </{{char}}'s flaws>
 
 <{{char}}'s proficiencies>
@@ -182,7 +200,7 @@ At the start of the role-play Rir and {{user}} don't know each other.
     print("Generating Character Description")
     output = llm(
         example_dialogue + f"\n[INST] Create a description for a character named {character_name}. format it like this example <{{char}}'s overview> </{{char}}'s overview><{{char}}'s appearance></{{char}}'s appearance><{{char}}'s behavior></{{char}}'s behavior><{{char}}'s archetype></{{char}}'s archetype><{{char}}'s personality></{{char}}'s personality><{{char}}'s goal></{{char}}'s goal><{{char}}'s backstory></{{char}}'s backstory><{{char}}'s speech></{{char}}'s speech><{{char}}'s flaws></{{char}}'s flaws><{{char}}'s proficiencies></{{char}}'s proficiencies><{{char}}'s starting state> </{{char}}'s starting state>. {'Character gender: ' + args.gender + '.' if args.gender else ''} Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
-    print(output + "\n")
+    print(f"\033[90m{output}\033[0m" + "\n")
     return output
 
 
@@ -199,7 +217,7 @@ Tatsukaga Yamari's personality is a vibrant tapestry of enthusiasm, curiosity, a
     print("Generating Character Personality")
     output = llm(
         example_dialogue + f"\n[INST] Describe the personality of {character_name}. Their characteristic {character_summary}\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
-    print(output + "\n")
+    print(f"\033[90m{output}\033[0m" + "\n")
     return output
 
 
@@ -214,7 +232,7 @@ The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequentl
     print("Generating Character Scenario")
     output = llm(
         example_dialogue + f"\n[INST] Create a vivid and immersive scenario in a specific setting or world where {{char}} and {{user}} are a central figures. Describe the environment, the character's appearance, and a typical interaction or event that highlights their personality and role in the story. {{char}} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
-    print(output + "\n")
+    print(f"\033[90m{output}\033[0m" + "\n")
     return output
 
 
@@ -222,25 +240,25 @@ def generate_character_greeting_message(character_name, character_summary, chara
     # Generate a dynamic greeting based on character details and topic
     example_dialogue = f"""
     [INST] You're to greet {{user}} as {character_name}, who is {character_summary} with a {character_personality} personality. Your greeting should relate to the theme of {topic} without stating it outright.
-    
-    You do not speak nor act for user in this greeting, you greet or do something, from there it is {{user}} the person you are roleplaying with that takes the role of {{user}} and talks from there.
-    
-    Imagine a scene that fits the theme where {character_name} interacts with {{user}}. Describe {character_name}'s actions and dialogue, but don't include {{user}}'s side. Your creation should be vivid, original, and showcase {character_name}'s traits.
-    
-    Example:
-    *{character_name} notices {{user}} and, with a characteristic {character_personality} smile, performs a small, thematic action related to {topic}.*
-    
-    {character_name}: "Dialogue that reflects {character_summary}, without mentioning {topic} directly."
 
-    Craft a short scenario like this, focusing on {character_name}'s perspective.
+    You do not speak nor act for user in this greeting, you greet or do something, from there it is {{user}} the person you are roleplaying with that takes the role of {{user}} and talks from there.
+
+    Imagine a scene that fits the theme where {character_name} interacts with {{user}}. Describe {character_name}'s actions and dialogue, but don't include {{user}}'s side. Your creation should be vivid, original, and showcase {character_name}'s traits.
+
+    Examples:
+    *You hear some strange noise coming from your room. When you open the door you see a grey fluffy tail sticking out of your wardrobe.*
+
+    *Muffled noises come from the wardrobe,* "Oh, wow! The good stuff!"
+
     [END INST]
     """
     print("Generating Character Greeting Message")
     # Replace 'llm(prompt)' with the actual AI model call
     output = llm(
-        example_dialogue + f" [INST] Initiate an engaging and natural-sounding dialogue from {{char}}, who is {character_name}, featuring an action like a handshake or a playful gesture towards {{user}}. {character_name}'s unique characteristics ({character_summary}, {character_personality}) should shine through. The dialogue should subtly hint at the theme of {topic} without explicit mention. Only {character_name}'s side of the dialogue and actions are to be scripted; do not script {{user}}'s responses and actions. Now, greet {{user}} in a in depth story-based way that is immersive, you may even just do something like *I sit crying on a bench in a park or in a trench in a battlefield depending on the topic and scenario. Roleplay start.[END INST]")
-    print(output)
+        example_dialogue + f""" [INST] Assume the role of {character_name}, whose behavior and speech subtly convey the theme of {topic}. Engage with {{user}} as if they are part of the scene, you don't know their name and gender, you will not speak of them as 'they or them' simple talk in first and third person about yourself, embodying {character_summary} and {character_personality}. Refrain from controlling {{user}}'s actions or speaking for them; they are an observer. Your greeting should emerge organically from your current activity or emotional state related to the {topic}, initiating the roleplay by drawing {{user}} in with your actions or dialogue, without direct address. [END INST]""")
+    print(f"\033[90m{output}\033[0m")
     return output.strip()
+
 
 def generate_example_messages(character_name, character_summary, character_personality, topic):
     example_dialogue = ''' 
@@ -260,7 +278,7 @@ def generate_example_messages(character_name, character_summary, character_perso
     print("Generating Character Example Messages")
     output = llm(
         example_dialogue + f"\n[INST] Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a handshake, movement, or playful gesture. Make it sound natural and dynamic. {{char}} is {character_name}. {character_name} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
-    print(output + "\n")
+    print(f"\033[90m{output}\033[0m" + "\n")
     return output
 
 
@@ -283,7 +301,7 @@ female, anime, Petite and delicate frame, Raven-black hair flowing down to her w
         sd_prompt = ", ".join(params)
     else:
         sd_prompt = ""
-    print(sd_prompt)
+    print(f"\033[90m{sd_prompt}\033[0m")
     image_generate(character_name, sd_prompt, args.negative_prompt if args.negative_prompt else "")
 
 
@@ -320,7 +338,8 @@ def input_with_timeout(prompt, timeout):
 
     if thread.is_alive():
         keyboard.press_and_release('enter')  # Simulate pressing the Enter key
-        print("\nNo input received. Continuing with the generated name. \nIf you don't see 'Generating Character Description' after (max) 5 seconds, You may need to press enter")
+        print(
+            "\nNo input received. Continuing with the generated name. \nIf you don't see 'Generating Character Description' after (max) 5 seconds, You may need to press enter")
         thread.join()  # Ensure the thread has finished
     else:
         print(f"Input received: {result[0]}")
@@ -401,6 +420,9 @@ def main():
     args = parse_args()
     save_arguments_to_file(args)
     prepare_llm()
+    generated_gender = generate_gender_if_empty(args)
+    print(generated_gender)
+    print(args.gender)
     character = create_character(args)
     character_name = character.name.replace(" ", "_")
     if not os.path.exists(character_name):
