@@ -1,4 +1,4 @@
-# Character factory With "enhanced"/alternative generation system
+# Character factory With Fully AI generated Greeting Message.
 
 <a target="_blank" href="https://colab.research.google.com/drive/1JqkrtFXKalcmuMvST2VltoS1UVwoQINH">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
