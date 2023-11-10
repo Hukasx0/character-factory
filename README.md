@@ -9,9 +9,9 @@ This Python script is designed to help you generate characters for [SillyTavern]
 <div>
   <p>My Characters:</p>
   <p>Default:</p>
-  <img src="https://github.com/thijsi123/character-factory/blob/75d1de7cf0aac46c141429fa105fb7bc8985ec18/examples/Kai_Akashi/Kai_Akashi.card.png?raw=true" width="300" height="300" alt="Zara_Moonstone card">
+  <img src="https://github.com/thijsi123/character-factory/blob/main/examples/Kai_Akashi/Kai_Akashi.card.png?raw=true" width="300" height="300" alt="Zara_Moonstone card">
   <p>Using Oobabooga text gen:</p>
-  <img src="https://github.com/thijsi123/character-factory/blob/0647d43549c3e9bf6417ebdec9a19164d9263763/examples/Kaito_Kuroba/Kaito_Kuroba.card.png?raw=true" width="300" height="300" alt="Kaito Kuroba card">
+  <img src="https://github.com/thijsi123/character-factory/blob/main/examples/Kaito_Kuroba/Kaito_Kuroba.card.png?raw=true" width="300" height="300" alt="Kaito Kuroba card">
   <br>
   <br>
   <p>Original characters:</p>
