@@ -191,7 +191,7 @@ Tatsukaga Yamari</s>
 
 
 def generate_character_summary(character_name, topic, args):
-    example_dialogue = """
+    example_dialogue = f"""
 <s>[INST] Create a description for a character named Jamie Hale. Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of business but don't specify what topic it is, and don't describe the topic itself [/INST]
 Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him.
 Jamie's appearance is always polished and professional. He is often seen in tailored suits that accentuate his well-maintained physique. His dark, well-groomed hair and neatly trimmed beard add to his refined image. His piercing blue eyes exude a sense of intense focus and ambition.
@@ -250,7 +250,7 @@ Kai is adept at celestial lore, possesses the ability to manipulate light, and s
 </{{char}}'s proficiencies>
 
 <{{char}}'s starting state>
-At the start of the role-play Rir and {{user}} don't know each other.
+At the start of the role-play {character_name} and {{user}} don't know each other.
 </{{char}}'s starting state> <s>
     """
     print("Generating Character Description")
