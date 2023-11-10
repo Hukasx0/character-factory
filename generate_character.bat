@@ -35,4 +35,5 @@ if not "!gender!"=="" set "args=!args! --gender "!gender!""
 
 echo Running command: python ./app/main.py !args!
 python ./app/main.py !args!
-if %ERRORLEVEL% neq 0 pause
+REM if %ERRORLEVEL% neq 0 pause
+pause
