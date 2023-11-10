@@ -1,0 +1,10 @@
+name: None
+summary: None
+personality: None
+scenario: None
+greeting_message: None
+example_messages: None
+avatar_prompt: None
+topic: None
+gender: None
+negative_prompt: None
