@@ -84,7 +84,7 @@ def prepare_llm():
     gpu_layers = 0
     if torch.cuda.is_available():
         gpu_layers = 110
-        print("Loading LLM to GPU...")
+        print("Loading LLM to GPU... restart if this takes over 1 a 2 minutes \nDon't worry, your data is saved in last_used_arguments.txt \n⚠️it will be overwritten next launch⚠️")
     else:
         print("Loading LLM to CPU...")
     llm = CTransformers(
@@ -320,7 +320,7 @@ Jamie's appearance is always polished and professional.\nJamie Hale's personalit
 """
     print("Generating Character Greeting")
     output = llm(
-        example_dialogue + f"""\n<|user|> Create the first message that the character {character_name}, whose personality is {character_summary}\n{character_personality}\ngreets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself, don't foget the gprmat, it needs "quotation marks" when talking and *stars* when indicating an action </s>\n<|assistant|> """)
+        example_dialogue + f"""\n[INST] Create the first message that the character {character_name}, whose personality is {character_summary}\n{character_personality}\ngreets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself, don't foget the gprmat, it needs "quotation marks" when talking and *stars* when indicating an action </s>\n<|assistant|> [/inst]""")
     print(f"\033[91m{output}\033[0m" + "\n")
     return output
 
@@ -328,12 +328,14 @@ Jamie's appearance is always polished and professional.\nJamie Hale's personalit
 def generate_example_messages(character_name, character_summary, character_personality, topic):
     example_dialogue = ''' 
 <s>[INST] Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a handshake, movement, or playful gesture. Make it sound natural and dynamic. {{char}} is {character_name}. {character_name} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what the topic is, and don't describe the topic itself [/INST]
+<START>
 {{user}}: "Good afternoon, Mr. {{char}}. I've heard so much about your success. It's an honor to meet you."
 {{char}}: *{{char}} gives a warm smile and extends his hand for a handshake.* "The pleasure is mine, {{user}}. Your reputation precedes you. Let's make this a success together."
 {{user}}: *Shakes {{char}}'s hand with a firm grip.* "I look forward to it."
 {{char}}: *As they release the handshake, {character_name} leans in, their eyes sharp with interest.* "Impressive. Tell me more about how we align with our goals."
 </s>
 <s>[INST] Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a playful gesture. Make it sound natural and dynamic. {{char}} is Tatsukaga Yamari. Tatsukaga Yamari characteristics: Tatsukaga Yamari is an anime girl, living in a magical world and solving problems. Make this character unique and tailor them to the theme of anime but don't specify what topic it is, and don't describe the topic itself [/INST]
+<START>
 {{user}}: "{{char}}, this place is absolutely enchanting. What's the plan for today?"
 {{char}}: *{{char}} grabs {{user}}'s hand and playfully twirls them around before letting go.* "We're off to a new challenge. It's a treacherous journey, but I believe in us."
 {{user}}: *Nods with determination.* "With your skills and our friendship, there's nothing we can't accomplish."
@@ -342,7 +344,7 @@ def generate_example_messages(character_name, character_summary, character_perso
 
     print("Generating Character Example Messages")
     output = llm(
-        example_dialogue + f"\n[INST] Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a handshake, movement, or playful gesture. Make it sound natural and dynamic. {{char}} is {character_name}. {character_name} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself [/INST]\n")
+        example_dialogue + f"\n[INST] Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a handshake, movement, or playful gesture. Make it sound natural and dynamic. {{char}} is {character_name}. {character_name} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself, format each section to start with <START> to indicate a new dialogue [/INST]\n")
     print(f"\033[90m{output}\033[0m" + "\n")
     return output
 
@@ -404,7 +406,7 @@ def input_with_timeout(prompt, timeout):
     if thread.is_alive():
         keyboard.press_and_release('enter')  # Simulate pressing the Enter key
         print(
-            "\nNo input received. Continuing with the generated name. \nIf you don't see 'Generating Character Description' after (max) 5 seconds, You may need to press enter")
+            "\nNo input received. Continuing with the generated name. \nIf you don't see 'Generating XXX' after (max) 5 seconds, You may need to press enter")
         thread.join()  # Ensure the thread has finished
     else:
         print(f"Input received: {result[0]}")
