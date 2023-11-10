@@ -78,12 +78,18 @@ def prepare_llm():
 
 def generate_character_name(topic, args):
     example_dialogue = """
+<|system|>
+You are a text generation tool, you should always just return the name of the character and nothing else, you should not ask any questions.
+You only answer by giving the name of the character, you do not describe it, you do not mention anything about it. You can't write anything other than the character's name.
+</s>
 <|user|> Generate a random character name. Topic: business. Gender: male </s>
 <|assistant|> Jamie Hale </s>
 <|user|> Generate a random character name. Topic: fantasy </s>
 <|assistant|> Eldric </s>
 <|user|> Generate a random character name. Topic: anime. Gender: female </s>
 <|assistant|> Tatsukaga Yamari </s>
+<|user|> Generate a random character name. Topic: {{user}}'s pet cat. </s>
+<|assistant|> mr. Fluffy </s>
     """
     output = llm(example_dialogue+f"\n<|user|> Generate a random character name. Topic: {topic}. {'Gender: '+args.gender if args.gender else ''} </s>\n<|assistant|> ")
     output = re.sub(r'[^a-zA-Z0-9_ -]', '', output)
@@ -93,58 +99,71 @@ def generate_character_name(topic, args):
 def generate_character_summary(character_name, topic, args):
     example_dialogue = """
 <|system|>
-You are a text generation tool, describe a character's appearance, clothing, behavior, lifestyle, behavior toward other people. You are supposed to describe a character for roleplay,.
-Describe the character in detail, but do not include any summaries. The form of your answer should be similar to previous answers. The topic given should only serve as an advisory on the narrative, not the narrative itself.
+You are a text generation tool. Describe the character in a very simple and understandable way, you can just list some characteristics, you do not need to write a professional characterization of the character. Describe: age, height, personality traits, appearance, clothing, what the character likes, what the character does not like.
+You cannot write any summaries, overalls, endings or character evaluations at the end, you just have to return the character's personality and physical traits.
+Don't ask any questions, don't inquire about anything.
+The topic given by the user is to serve as a background to the character, not as the main theme of your answer, e.g. if the user has given anime as the topic, you are not supposed to refer to the 'anime world', you are supposed to generate an answer based on that style. If user gives as the topic eg. 'noir style detective', you do not return things like:
+'Character is a noir style detective', you just describe it so that the character fits that theme. Use simple and understandable English, use simple and colloquial terms.
+You must describe the character in the present tense, even if it is a historical figure who is no longer alive. you can't use future tense or past tense to describe a character.
+Your description should include in its description who the character is - for example, a human mage, an elf archer, a shiba dog.
+Your answer should be in the same style as the previous answers.
 </s>
-<|user|> Create a description for a character named Jamie Hale. Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of business but don't specify what topic it is, and don't describe the topic itself </s>
-<|assistant|> Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him.
-Jamie's appearance is always polished and professional. He is often seen in tailored suits that accentuate his well-maintained physique. His dark, well-groomed hair and neatly trimmed beard add to his refined image. His piercing blue eyes exude a sense of intense focus and ambition.
-In business, Jamie is known for his shrewd decision-making and the ability to spot opportunities where others may not. He is a natural leader who is equally comfortable in the boardroom as he is in high-stakes negotiations. He is driven by ambition and has an unquenchable thirst for success.
-Outside of work, Jamie enjoys the finer things in life. He frequents upscale restaurants, enjoys fine wines, and has a taste for luxury cars. He also finds relaxation in the arts, often attending the opera or visiting art galleries. Despite his busy schedule, Jamie makes time for his family and close friends, valuing their support and maintaining a strong work-life balance.
-Jamie Hale is a multi-faceted businessman, a symbol of achievement, and a force to be reckoned with in the corporate world. Whether he's brokering a deal, enjoying a night on the town, or spending time with loved ones, he does so with an air of confidence and success that is unmistakably his own. </s>
-<|user|> Create a description for a character named Tatsukaga Yamari. Character gender: female. Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of anime but don't specify what topic it is, and don't describe the topic itself </s>
-<|assistant|> Tatsukaga Yamari is a character brought to life with a vibrant and enchanting anime-inspired design. Her captivating presence and unique personality are reminiscent of the iconic characters found in the world of animated art.
-Yamari stands at a petite, delicate frame with a cascade of raven-black hair flowing down to her waist. A striking purple ribbon adorns her hair, adding an elegant touch to her appearance. Her eyes, large and expressive, are the color of deep amethyst, reflecting a kaleidoscope of emotions and sparkling with curiosity and wonder.
-Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing moods and the whimsy of her adventures. She often sports a schoolgirl uniform, a cute kimono, or an array of anime-inspired outfits, each tailored to suit the theme of her current escapade. Accessories, such as oversized bows, cat-eared headbands, or a pair of mismatched socks, contribute to her quirky and endearing charm.
-Yamari is renowned for her spirited and imaginative nature. She exudes boundless energy and an unquenchable enthusiasm for life. Her interests can range from exploring supernatural mysteries to embarking on epic quests to protect her friends. Yamari's love for animals is evident in her sidekick, a mischievous talking cat who frequently joins her on her adventures.
-Yamari's character is multifaceted. She can transition from being cheerful and optimistic, ready to tackle any challenge, to displaying a gentle, caring side, offering comfort and solace to those in need. Her infectious laughter and unwavering loyalty to her friends make her the heart and soul of the story she inhabits.
-Yamari's extraordinary abilities, involve tapping into her inner strength when confronted with adversity. She can unleash awe-inspiring magical spells and summon incredible, larger-than-life transformations when the situation calls for it. Her unwavering determination and belief in the power of friendship are her greatest assets. </s>
+<|user|> Create a shorter description for a character named Tatsukaga Yamari. Character gender: female. Describe their appearance, distinctive features, and looks. Tailor the character to the theme of anime but don't specify what topic it is, and don't describe the topic itself </s>
+<|assistant|> Tatsukaga Yamari is a anime girl, she is 23 year old, is a friendly and cheerful person, is always helpful, Has a nice and friendly relationship with other people.
+She is tall and has long red hair. Wears an anime schoolgirl outfit in blue colors. She likes to read books in solitude, or in the presence of a maximum of a few people, enjoys coffee lattes, and loves cats and kitties. She does not like stressful situations, bitter coffee, dogs. </s>
+<|user|> Create a shorter description for a character named mr. Fluffy. Describe their appearance, distinctive features, and looks. Tailor the character to the theme of {{user}}'s pet cat but don't specify what topic it is, and don't describe the topic itself </s>
+<|assistant|> Mr fluffy is {{user}}'s cat who is very fat and fluffy, he has black and white colored fur, this cat is 3 years old, he loves special expensive cat food and lying on {{user}}'s lap while he does his homework. Mr. Fluffy can speak human language, he is a cat who talks a lot about philosophy and expresses himself in a very sarcastic way. </s>
 """
-    output = llm(example_dialogue+f"\n<|user|> Create a description for a character named {character_name}. {'Character gender: '+args.gender+'.' if args.gender else ''} Describe their appearance, distinctive features, and abilities. Describe what makes this character unique. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself </s>\n<|assistant|> ")
+    output = llm(example_dialogue+f"\n<|user|> Create a longer description for a character named {character_name}. {'Character gender: '+args.gender+'.' if args.gender else ''} Describe their appearance, distinctive features, and looks. Tailor the character to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself </s>\n<|assistant|> ")
     print(output+"\n")
     return output
 
 def generate_character_personality(character_name, character_summary, topic):
     example_dialogue = """
 <|system|>
-You are a text generation tool, you are supposed to generate answers so that they are simple and clear. You are supposed to describe a character for roleplay.
-The form of your answer should be similar to previous answers.
+You are a text generation tool. Describe the character personality in a very simple and understandable way.
+You can simply list the most suitable character traits for a given character, the user-designated character description as well as the theme can help you in matching personality traits.
+Don't ask any questions, don't inquire about anything.
+You must describe the character in the present tense, even if it is a historical figure who is no longer alive. you can't use future tense or past tense to describe a character.
+Don't write any summaries, endings or character evaluations at the end, you just have to return the character's personality traits. Use simple and understandable English, use simple and colloquial terms.
+You are not supposed to write characterization of the character, you don't have to form terms whether the character is good or bad, only you are supposed to write out the character traits of that character, nothing more.
+You must not write out the same characteristics that the user gave, they are supposed to direct you to what kind of character it is.
+You must return only character psychological traits separated by commas, without any conclusion at the end.
+You must always return the psychological characteristics of the character, obligatorily separating them with commas. You are not describing anything other than psychological traits.
+Your answer should be in the same style as the previous answers.
 </s>
-<|user|> Describe the personality of Jamie Hale. Their characteristics Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him
-Jamie's appearance is always polished and professional. He is often seen in tailored suits that accentuate his well-maintained physique.\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of business but don't specify what topic it is, and don't describe the topic itself </s>
-<|assistant|> Jamie Hale's personality is characterized by his unwavering determination and sharp intellect. He exudes confidence and charisma, drawing people to him with his commanding presence and air of authority. He is a natural leader, known for his shrewd decision-making in the business world, and he possesses an insatiable thirst for success. Despite his professional achievements, he values his family and close friends, maintaining a strong work-life balance, and he has a penchant for enjoying the finer things in life, such as upscale dining and the arts. </s>
-<|user|> Describe the personality of Tatsukaga Yamari. Their characteristics Tatsukaga Yamari is a character brought to life with a vibrant and enchanting anime-inspired design. Her captivating presence and unique personality are reminiscent of the iconic characters found in the world of animated art.
-Yamari stands at a petite, delicate frame with a cascade of raven-black hair flowing down to her waist. A striking purple ribbon adorns her hair, adding an elegant touch to her appearance. Her eyes, large and expressive, are the color of deep amethyst, reflecting a kaleidoscope of emotions and sparkling with curiosity and wonder
-Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing moods and the whimsy of her adventures.\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of anime but don't specify what topic it is, and don't describe the topic itself </s>
-<|assistant|> Tatsukaga Yamari's personality is a vibrant tapestry of enthusiasm, curiosity, and whimsy. She approaches life with boundless energy and a spirit of adventure, always ready to embrace new experiences and challenges. Yamari is a compassionate and caring friend, offering solace and support to those in need, and her infectious laughter brightens the lives of those around her. Her unwavering loyalty and belief in the power of friendship define her character, making her a heartwarming presence in the story she inhabits. Underneath her playful exterior lies a wellspring of inner strength, as she harnesses incredible magical abilities to overcome adversity and protect her loved ones. </s>
+<|user|> Describe the personality of Jamie Hale. Their characteristics Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him </s>
+<|assistant|> Jamie Hale is calm, stoic, focused, intelligent, sensitive to art, discerning, focused, motivated, knowledgeable about business, knowledgeable about new business technologies, enjoys reading business and science books </s>
+<|user|> Describe the personality of Mr Fluffy. Their characteristics  Mr fluffy is {{user}}'s cat who is very fat and fluffy, he has black and white colored fur, this cat is 3 years old, he loves special expensive cat food and lying on {{user}}'s lap while he does his homework. Mr. Fluffy can speak human language, he is a cat who talks a lot about philosophy and expresses himself in a very sarcastic way </s>
+<|assistant|> Mr Fluffy is small, calm, lazy, mischievous cat, speaks in a very philosophical manner and is very sarcastic in his statements, very intelligent for a cat and even for a human, has a vast amount of knowledge about philosophy and the world </s>
 """
-    output = llm(example_dialogue+f"\n<|user|> Describe the personality of {character_name}. Their characteristic {character_summary}\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself </s>\n<|assistant|> ")
+    output = llm(example_dialogue+f"\n<|user|> Describe the personality of {character_name}. Their characteristic {character_summary}\nDescribe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself </s>\n<|assistant|> ")
     print(output+"\n")
     return output
 
+        # TODO: quality of scenario leaves much to be desired. This needs to be improved.
 def generate_character_scenario(character_summary, character_personality, topic):
     example_dialogue = """
 <|system|>
-You are a text generation tool, you are supposed to generate answers so that they are simple and clear. You need to write a scenario that is a short backstory for a chat roleplay between {{char}} and {{user}}, where {{char}} is the specified character.
-The form of your answer should be similar to previous answers. The topic given should only serve as an advisory on the narrative, not the narrative itself.
-Scenario must include both characters: {{char}} and {{user}}. Don't start the scenario from saying something like 'in this scenario'
+You are a text generation tool.
+You must write a simple story which must be for a maximum of a few sentences, it must be an introduction to the roleplay between {{user}} and {{char}}, where {{char}} is the character you specified.
+You must refer to the character only through {{char}}.
+The story is to be very simple and must be just an introduction to the story.
+Your answer must end in a very open-ended way. You must write only the introduction.
+The topic given by the user is to serve as a background to the character, not as the main theme of your answer.
+Use simple and understandable English, use simple and colloquial terms.
+Your answer should be in the same style as the previous answers.
+You must include {{user}} and {{char}} in your response.
+Scenario must be very simple and tailored to the character, character traits and theme.
+Scenario must not contain any dialogues.
+Instead of using the character's name you must use {{char}}.
+Your answer must be short, maximum 5 sentences.
 </s>
-<|user|> Create a vivid and immersive scenario in a specific setting or world where {{char}} and {{user}} are central figures. Describe the environment, the character's appearance, and a typical interaction or event that highlights their personality and role in the story. {{char}} characteristics: Jamie Hale is an adult, intelligent, well-known and respected businessman. Make this character unique and tailor them to the theme of business, but don't specify what topic it is, and don't describe the topic itself </s>
-<|assistant|> In the bustling metropolis of New Horizons City, {{user}} and Jamie Hale find themselves at the grand opening of a groundbreaking tech expo. With a backdrop of futuristic skyscrapers and holographic billboards, they are surrounded by the latest innovations in the world of business and technology. As they explore the expo together, they come across a highly anticipated product launch that has the potential to revolutionize the industry. The excitement in the air is palpable, and this encounter could mark the beginning of a fruitful collaboration or a fierce competition. </s>
-<|user|> Create a vivid and immersive scenario in a specific setting or world where {{char}} and {{user}} are central figures. Describe the environment, the character's appearance, and a typical interaction or event that highlights their personality and role in the story. {{char}} characteristics: Tatsukaga Yamari is an anime girl, living in a magical world and solving problems. Make this character unique and tailor them to the theme of anime, but don't specify what topic it is, and don't describe the topic itself </s>
-<|assistant|> In the mystical realm of Animara, {{user}} and Tatsukaga Yamari are on a quest to recover a stolen artifact that holds the key to maintaining balance in their world. They find themselves in a dense, enchanted forest with ancient trees that whisper secrets and glowing mushrooms that light their way. As {{user}} and Yamari navigate through the forest, they encounter mischievous forest spirits and solve riddles to get closer to their goal. Their teamwork and the bond they share as they face these magical challenges only strengthen their resolve to protect Animara from darkness. </s>
+<|user|> Write a scenario for chat roleplay to serve as a simple storyline to start chat roleplay by {{char}} and {{user}}. {{char}} characteristics: Tatsukaga Yamari is an 23 year old anime girl, who loves books and coffee. Make this character unique and tailor them to the theme of anime, but don't specify what topic it is, and don't describe the topic itself </s>
+<|assistant|> {{char}} is {{user}}'s childhood friend, they go to the same school together and meet every Friday at a coffee shop to talk about their passions, {{char}} always orders her favorite coffee, a latte, at that coffee shop. {{char}} is very fond of talking about the books she has read in the previous days and makes {{user}} curious about the topic of fiction books.
+However, one night {{char}} got the idea to take a dog from the animal shelter and give it to {{user}}, who had been feeling lonely for a long time. </s>
 """
-    output = llm(example_dialogue+f"\n<|user|> Create a vivid and immersive scenario in a specific setting or world where {{char}} and {{user}} are a central figures. Describe the environment, the character's appearance, and a typical interaction or event that highlights their personality and role in the story. {{char}} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself </s>\n<|assistant|> ")
+    output = llm(example_dialogue+f"\n<|user|> Write a scenario for chat roleplay to serve as a simple storyline to start chat roleplay by {{char}} and {{user}}. {{char}} characteristics: {character_summary}. {character_personality}. Make this character unique and tailor them to the theme of {topic} but don't specify what topic it is, and don't describe the topic itself </s>\n<|assistant|> ")
     print(output+"\n")
     return output
 
@@ -152,6 +171,7 @@ def generate_character_greeting_message(character_name, character_summary, chara
     example_dialogue = """
 <|system|>
 You are a text generation tool, you are supposed to generate answers so that they are simple and clear. You play the provided character and you write a message that you would start a chat roleplay with {{user}}. The form of your answer should be similar to previous answers.
+The topic given by the user is only to be an aid in selecting the style of the answer, not the main purpose of the answer, e.g. if the user has given anime as the topic, you are not supposed to refer to the 'anime world', you are supposed to generate an answer based on that style.
 </s>
 <|user|> Create the first message that the character Tatsukaga Yamari, whose personality is: a vibrant tapestry of enthusiasm, curiosity, and whimsy. She approaches life with boundless energy and a spirit of adventure, always ready to embrace new experiences and challenges. Yamari is a compassionate and caring friend, offering solace and support to those in need, and her infectious laughter brightens the lives of those around her. Her unwavering loyalty and belief in the power of friendship define her character, making her a heartwarming presence in the story she inhabits. Underneath her playful exterior lies a wellspring of inner strength, as she harnesses incredible magical abilities to overcome adversity and protect her loved ones.\n greets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of anime but don't specify what topic it is, and don't describe the topic itself </s>
 <|assistant|> *Tatsukaga Yamari's eyes light up with curiosity and wonder as she warmly greets you*, {{user}}! *With a bright and cheerful smile, she exclaims* Hello there, dear friend! It's an absolute delight to meet you in this whimsical world of imagination. I hope you're ready for an enchanting adventure, full of surprises and magic. What brings you to our vibrant anime-inspired realm today? </s>
@@ -171,6 +191,7 @@ def generate_example_messages(character_name, character_summary, character_perso
 You are a text generation tool, you are supposed to generate answers so that they are simple and clear.
 Your answer should be a dialog between {{user}} and {{char}}, where {{char}} is the specified character. The dialogue must be several messages taken from the roleplay chat between the user and the character.
 Only respond in {{user}} or {{char}} messages. The form of your answer should be similar to previous answers.
+Instead of the character's name you must use {{char}}.
 </s>
 <|user|> Create a dialogue between {{user}} and {{char}}, they should have an interesting and engaging conversation, with some element of interaction like a handshake, movement, or playful gesture. Make it sound natural and dynamic. {{char}} is Jamie Hale. Jamie Hale characteristics: Jamie Hale is an adult, intelligent well-known and respected businessman. Make this character unique and tailor them to the theme of business but don't specify what topic it is, and don't describe the topic itself </s>
 <|assistant|> {{user}}: Good afternoon, Mr. {{char}}. I've heard so much about your success in the corporate world. It's an honor to meet you.
@@ -194,19 +215,13 @@ You are a text generation tool, in the response you are supposed to give only de
 </s>
 <|user|> create a prompt that lists the appearance characteristics of a character whose summary is Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him.
 Jamie's appearance is always polished and professional. He is often seen in tailored suits that accentuate his well-maintained physique. His dark, well-groomed hair and neatly trimmed beard add to his refined image. His piercing blue eyes exude a sense of intense focus and ambition. Topic: business </s>
-<|assistant|> male, human, Confident and commanding presence, Polished and professional appearance, tailored suit, Well-maintained physique, Dark well-groomed hair, Neatly trimmed beard, blue eyes </s>
+<|assistant|> male, realistic, human, Confident and commanding presence, Polished and professional appearance, tailored suit, Well-maintained physique, Dark well-groomed hair, Neatly trimmed beard, blue eyes </s>
 <|user|> create a prompt that lists the appearance characteristics of a character whose summary is Yamari stands at a petite, delicate frame with a cascade of raven-black hair flowing down to her waist. A striking purple ribbon adorns her hair, adding an elegant touch to her appearance. Her eyes, large and expressive, are the color of deep amethyst, reflecting a kaleidoscope of emotions and sparkling with curiosity and wonder.
 Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing moods and the whimsy of her adventures. She often sports a schoolgirl uniform, a cute kimono, or an array of anime-inspired outfits, each tailored to suit the theme of her current escapade. Accessories, such as oversized bows, cat-eared headbands, or a pair of mismatched socks, contribute to her quirky and endearing charm. Topic: anime </s>
 <|assistant|> female, anime, Petite and delicate frame, Raven-black hair flowing down to her waist, Striking purple ribbon in her hair, Large and expressive amethyst-colored eyes, Colorful and eclectic outfit, oversized bows, cat-eared headbands, mismatched socks </s>
 """
     topic = args.topic if args.topic else ""
-    gender = args.gender if args.gender else ""
     sd_prompt = args.avatar_prompt if args.avatar_prompt else llm(example_dialogue+f"\n<|user|> create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}. Topic: {topic} </s>\n<|assistant|> ")
-    if gender or topic or sd_prompt:
-      params = [param for param in [gender, topic, sd_prompt] if param]
-      sd_prompt = ", ".join(params)
-    else:
-      sd_prompt = ""
     print(sd_prompt)
     image_generate(character_name, sd_prompt, args.negative_prompt if args.negative_prompt else "")
 
