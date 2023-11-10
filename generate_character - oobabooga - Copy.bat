@@ -34,5 +34,6 @@ set /p "gender=Enter character gender (male, female, etc... or press Enter for n
 if not "!gender!"=="" set "args=!args! --gender "!gender!""
 
 echo Running command: python ./app/oobabooga.py !args!
-python ./app/llamaccp.py !args!
-if %ERRORLEVEL% neq 0 pause
+python ./app/oobabooga.py !args!
+REM if %ERRORLEVEL% neq 0 pause
+pause

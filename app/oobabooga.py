@@ -1,3 +1,20 @@
+import os
+import random
+import re
+import aichar
+import requests
+from tqdm import tqdm
+import sdkit
+from sdkit.models import load_model
+from sdkit.generate import generate_images
+from sdkit.utils import log
+import torch
+import argparse
+from langchain.llms import CTransformers
+import threading
+import keyboard
+
+#llm = None
 
 import requests
 #I run the server inside H:/ai/llama open cmd then run server.exe -m psymedrp-v1-13b.Q5_0.gguf -c 2048 -ngl 128
@@ -35,23 +52,6 @@ def send_message(prompt):
     if response.status_code == 200:
         result = response.json()['results'][0]['text']
         return result
-import os
-import random
-import re
-import aichar
-import requests
-from tqdm import tqdm
-import sdkit
-from sdkit.models import load_model
-from sdkit.generate import generate_images
-from sdkit.utils import log
-import torch
-import argparse
-from langchain.llms import CTransformers
-import threading
-import keyboard
-
-llm = None
 
 
 # Function to generate gender if it's not provided in the args
