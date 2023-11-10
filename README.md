@@ -7,7 +7,7 @@
 This Python script is designed to help you generate characters for [SillyTavern](https://github.com/SillyTavern/SillyTavern), [TavernAI](https://github.com/TavernAI/TavernAI), [TextGenerationWebUI](https://github.com/oobabooga/text-generation-webui) and many more, using LLM (Large Language Model) and Stable Diffusion. The script utilizes various deep learning models to create detailed character cards, including names, summaries, personalities, greeting messages, and character avatars.
 
 <div>
-  <img src="https://github.com/thijsi123/character-factory/blob/75d1de7cf0aac46c141429fa105fb7bc8985ec18/examples/Kai_Akashi/Kai_Akashi.card.png" width="300" height="300" alt="Zara_Moonstone card">
+  <img src="https://github.com/thijsi123/character-factory/blob/main/examples/Kai_Akashi/Kai_Akashi.card.png?raw=true" width="300" height="300" alt="Zara_Moonstone card">
   <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Neko_Yui_Ichinose/Neko_Yui_Ichinose.card.png?raw=true" width="300" height="300" alt="Neko Yui Ichinose character card">
   <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Cassandra_Vargas/Cassandra_Vargas.card.png?raw=true" width="300" height="300" alt="Cassandra Vargas character card">
   <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Arthondt_Lightbringer/Arthondt_Lightbringer.card.png?raw=true" width="300" height="300" alt="Arthondt Lightbringer character card">
