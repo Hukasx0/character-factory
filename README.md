@@ -24,19 +24,85 @@ This Python script is designed to help you generate characters for [SillyTavern]
 
 This script is designed to streamline the process of character generation for SillyTavern, TavernAI, and TextGenerationWebUI by leveraging LLM and Stable Diffusion models. It provides an easy way to create unique and imaginative characters for storytelling, chatting and other purposes.
 
-## Prerequisites
-Before running the script, make sure you have Python3 and dependencies installed:
+## Running the script locally
+### CPU
+1. download miniconda from https://docs.conda.io/projects/miniconda/en/latest/
+2. familiarize yourself with how conda works https://conda.io/projects/conda/en/latest/user-guide/getting-started.html
+3. Download Git (if you don't have it already) https://git-scm.com/
+4. Clone git repository
+```
+git clone https://github.com/Hukasx0/character-factory
+```
+5. Open the anaconda prompt and enter the path of the folder
 
-CPU:
-```py
+for example:
+```
+cd C:\Users\me\Desktop\character-factory
+```
+6. Execute these commands in the conda command prompt step by step.
+```
+conda create -n character-factory
+```
+```
+conda activate character-factory
+```
+```
+conda install python=3.11
+```
+```
 pip install -r requirements.txt
 ```
 
-CUDA:
-```py
+and you can start using the script, for example like this:
+```
+python ./app/main-mistral.py --name "Albert Einstein" --topic "science" --avatar-prompt "Albert Einstein"
+```
+
+***Later, the next time you run it, you don't need to create a new environment, just repeat step 5. and type in (in the conda command prompt)***
+```
+conda activate character-factory
+```
+
+### CUDA
+1. download miniconda from https://docs.conda.io/projects/miniconda/en/latest/
+2. familiarize yourself with how conda works https://conda.io/projects/conda/en/latest/user-guide/getting-started.html
+3. Download Git (if you don't have it already) https://git-scm.com/
+4. Clone git repository
+```
+git clone https://github.com/Hukasx0/character-factory
+```
+5. Open the anaconda prompt and enter the path of the folder
+
+for example:
+```
+cd C:\Users\me\Desktop\character-factory
+```
+6. Download the Cuda package for Anaconda https://anaconda.org/nvidia/cuda
+8. Execute these commands in the conda command prompt step by step.
+```
+conda create -n character-factory
+```
+```
+conda activate character-factory
+```
+```
+conda install python=3.11
+```
+```
 pip install -r requirements-cuda.txt
 ```
-When you run the script for the first time, the script will automatically download the required LLM and Stable Diffusion models
+
+and you can start using the script, for example like this:
+```
+python ./app/main-mistral.py --name "Albert Einstein" --topic "science" --avatar-prompt "Albert Einstein"
+```
+
+***Later, the next time you run it, you don't need to create a new environment, just repeat step 5. and type in (in the conda command prompt)***
+```
+conda activate character-factory
+```
+  
+#### When you run the script for the first time, the script will automatically download the required LLM and Stable Diffusion models
 
 ## Generation options
 ```--name``` This flag allows you to specify the character's name. If provided, the script will use the name you specify. If not provided, the script will use the Language Model (LLM) to generate a name for the character.
