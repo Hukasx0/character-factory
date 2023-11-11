@@ -1,6 +1,12 @@
 # Character factory
 
+version using Zephyr 7B beta:
 <a target="_blank" href="https://colab.research.google.com/drive/1JqkrtFXKalcmuMvST2VltoS1UVwoQINH">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+version using Mistral 7b instruct 0.1:
+<a target="_blank" href="https://colab.research.google.com/drive/108koWoCDGaLZhZ0eV-gFuWtsnnLFMeCB">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -54,31 +60,38 @@ When you run the script for the first time, the script will automatically downlo
 ```--example-messages``` Specify example messages for the character using this flag. If you provide example messages, they will be used for the character. If not provided, the script will use LLM to generate example messages for the character.
 
 ## Colab usage
-1. Open the notebook in Google Colab by clicking the badge:
+1. Open the notebook in Google Colab by clicking one of those badges:
+
+version using Zephyr 7B beta:
 <a target="_blank" href="https://colab.research.google.com/drive/1JqkrtFXKalcmuMvST2VltoS1UVwoQINH">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-2. After opening the link, you will see the notebook within the Google Colab environment.
-3. Make sure to check whether a GPU is selected for your environment. Running your script on a CPU will not work. To verify the GPU selection, follow these steps:
+version using Mistral 7b instruct 0.1:
+<a target="_blank" href="https://colab.research.google.com/drive/108koWoCDGaLZhZ0eV-gFuWtsnnLFMeCB">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+3. After opening the link, you will see the notebook within the Google Colab environment.
+4. Make sure to check whether a GPU is selected for your environment. Running your script on a CPU will not work. To verify the GPU selection, follow these steps:
    1. Click on "Runtime" in the top menu.
    2. Change the CPU to one of these: T4 GPU, A100 GPU, V100 GPU
    3. Click "Save."
-4. After the environment starts, you need to run each cell in turn
-5. If everything is prepared, you can just run the last cell to generate characters
+5. After the environment starts, you need to run each cell in turn
+6. If everything is prepared, you can just run the last cell to generate characters
 
 ## Example usage:
 ```
-python ./app/main.py --topic "anime schoolgirl" --negative-prompt "hyperrealistic, realistic, photo"
+python ./app/main-zephyr.py --topic "{{user}}'s pessimistic, monday-hating cat" --negative-prompt "human, gore, nsfw"
 ```
 ```
-python ./app/main.py --topic "noir style detective" --negative-prompt "fantasy, animation, anime, nature"
+python ./app/main-zephyr.py --topic "{{user}}'s childhood friend, who secretly loves him" --gender "female" --negative-prompt "gore, nude, nsfw"
 ```
 ```
-python ./app/main.py --topic "Old mage master of lightning" --negative-prompt "anime, nature, city, modern, young"
+python ./app/main-mistral.py --topic "Old mage master of lightning" --gender "male" --negative-prompt "anime, nature, city, modern, young"
 ```
 ```
-python ./app/main.py --name "Albert Einstein" --topic "science" --avatar-prompt "Albert Einstein"
+python ./app/main-mistral.py --name "Albert Einstein" --topic "science" --avatar-prompt "Albert Einstein"
 ```
 
 ## License
