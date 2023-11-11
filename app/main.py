@@ -176,11 +176,35 @@ def generate_topic_if_empty(args):
 def generate_character_name(topic, args):
     example_dialogue = """
 <s>[INST] Generate a random character name. Topic: business. Gender: male [/INST]
-Jamie Hale</s>
+Jamie Hale </s>
 <s>[INST] Generate a random character name. Topic: fantasy. [/INST]
-Eldric</s>
+Eldric </s>
 <s>[INST] Generate a random character name. Topic: anime. Gender: female [/INST]
-Tatsukaga Yamari</s>
+Tatsukaga Yamari </s>
+<s>[INST] Generate a random character name. Topic: Fantasy: Dragons, quests, and ancient curses. Gender: male [/INST]
+Alaric </s>
+<s>[INST] Generate a random character name. Topic: Anime: Magic, quests, Harem. Gender: female [/INST]
+Hikari Tsukino </s>
+<s>[INST] Generate a random character name. Topic: Science Fiction: Space exploration, alien diplomacy, and wormholes. Gender: male [/INST]
+Jaxon Vega </s>
+<s>[INST] Generate a random character name. Topic: Mystery: Detective, noir, and the unsolvable case. Gender: female [/INST]
+Evelyn </s>
+<s>[INST] Generate a random character name. Topic: Adventure: Treasure hunting, uncharted islands, and ancient ruins. Gender: male [/INST]
+Marco </s>
+<s>[INST] Generate a random character name. Topic: Romance: Star-crossed lovers, societal boundaries, and secret rendezvous. Gender: female [/INST]
+Juliette </s>
+<s>[INST] Generate a random character name. Topic: Horror: Vampire covens, moonlit hunts, and immortal betrayal. Gender: male [/INST]
+Dimitri Volkov </s>
+<s>[INST] Generate a random character name. Topic: Superhero: Vigilantes, supervillains, and epic showdowns. Gender: female [/INST]
+Aurora </s>
+<s>[INST] Generate a random character name. Topic: Historical: Medieval politics, knightly orders, and royal betrayals. Gender: male [/INST]
+Sir Tristan </s>
+<s>[INST] Generate a random character name. Topic: Dystopian: Post-apocalyptic survival, raider gangs, and new world orders. Gender: female [/INST]
+Nova </s>
+<s>[INST] Generate a random character name. Topic: Anime: Intense competitions, rising champions, and team spirit. Gender: male [/INST]
+Tsubasa </s>
+<s>[INST] Generate a random character name. Topic: Anime: Magical worlds, enchanted artifacts, and ancient prophecies. Gender: female [/INST]
+Sakura Himura </s>
     """
     print("Generating Character Name")
     output = llm(

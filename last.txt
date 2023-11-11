@@ -1,0 +1,10 @@
+name:  
+summary:  
+personality:  
+scenario:  
+greeting_message:  
+example_messages:  
+avatar_prompt:  
+topic:  "Anime: Magical worlds, enchanted artifacts, and ancient prophecies."
+gender:  
+negative_prompt:  
