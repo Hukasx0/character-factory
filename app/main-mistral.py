@@ -190,7 +190,7 @@ def image_generate(character_name, prompt, negative_prompt):
         print("Loading Stable Diffusion to CPU...")
     context.model_paths['stable-diffusion'] = 'models/dreamshaper_8.safetensors'
     load_model(context, 'stable-diffusion')
-    prompt = "portrait, smile, absurdres, full hd, 8k, 3D, high quality, anime, anime artstyle, cute, " + prompt
+    prompt = "absurdres, full hd, 8k, 3D, high quality, " + prompt
     default_negative_prompt = ("worst quality, normal quality, low quality, low res, blurry, text, watermark, logo, banner, extra digits, cropped, jpeg artifacts, signature, username, error, sketch ,duplicate, ugly, monochrome, horror, geometry, mutation, disgusting"
     + "bad anatomy, bad hands, three hands, three legs, bad arms, missing legs, missing arms, poorly drawn face, bad face, fused face, cloned face, worst face, three crus, extra crus, fused crus, worst feet, three feet, fused feet, fused thigh, three thigh, fused thigh, extra thigh, worst thigh, missing fingers, extra fingers, ugly fingers, long fingers, horn, extra eyes, huge eyes, 2girl, amputation, disconnected limbs")
     negative_prompt = default_negative_prompt + (negative_prompt or "")
