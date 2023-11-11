@@ -13,8 +13,8 @@ version using Mistral 7b instruct 0.1:
 This Python script is designed to help you generate characters for [SillyTavern](https://github.com/SillyTavern/SillyTavern), [TavernAI](https://github.com/TavernAI/TavernAI), [TextGenerationWebUI](https://github.com/oobabooga/text-generation-webui) and many more, using LLM (Large Language Model) and Stable Diffusion. The script utilizes various deep learning models to create detailed character cards, including names, summaries, personalities, greeting messages, and character avatars.
 
 <div>
-  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Neko_Yui_Ichinose/Neko_Yui_Ichinose.card.png?raw=true" width="300" height="300" alt="Neko Yui Ichinose character card">
-  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Cassandra_Vargas/Cassandra_Vargas.card.png?raw=true" width="300" height="300" alt="Cassandra Vargas character card">
+  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Grumpy_Purrsnatch/Grumpy_Purrsnatch.card.png?raw=true" width="300" height="300" alt="Grumpy Purrsnatch character card">
+  <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Lily_Harper/Lily_Harper.card.png?raw=true" width="300" height="300" alt="Lily Harper character card">
   <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Arthondt_Lightbringer/Arthondt_Lightbringer.card.png?raw=true" width="300" height="300" alt="Arthondt Lightbringer character card">
   <img src="https://github.com/Hukasx0/character-factory/blob/main/examples/Albert_Einstein/Albert_Einstein.card.png?raw=true" width="300" height="300" alt="Albert Einstein character card">
 </div>
