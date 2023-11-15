@@ -24,6 +24,9 @@ This Python script is designed to help you generate characters for [SillyTavern]
 
 This script is designed to streamline the process of character generation for SillyTavern, TavernAI, and TextGenerationWebUI by leveraging LLM and Stable Diffusion models. It provides an easy way to create unique and imaginative characters for storytelling, chatting and other purposes.
 
+## WebUI
+Only available on Google Colab
+
 ## Running the script locally
 ### CPU
 1. download miniconda from https://docs.conda.io/projects/miniconda/en/latest/
