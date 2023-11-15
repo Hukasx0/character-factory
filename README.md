@@ -1,11 +1,11 @@
 # Character factory
 
-version using Mistral 7b instruct 0.1:
+WebUI using Mistral 7b instruct 0.1:
 <a target="_blank" href="https://colab.research.google.com/drive/108koWoCDGaLZhZ0eV-gFuWtsnnLFMeCB">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-version using Zephyr 7B beta:
+WebUI using Zephyr 7B beta:
 <a target="_blank" href="https://colab.research.google.com/drive/1JqkrtFXKalcmuMvST2VltoS1UVwoQINH">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
