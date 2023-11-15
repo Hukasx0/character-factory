@@ -27,6 +27,10 @@ This script is designed to streamline the process of character generation for Si
 ## WebUI
 Only available on Google Colab
 
+<img src="https://raw.githubusercontent.com/Hukasx0/character-factory/main/images/webui.png"  alt="Character Factory WebUI Screenshot 1">
+
+<img src="https://raw.githubusercontent.com/Hukasx0/character-factory/main/images/webui2.png" alt="Character Factory WebUI Screenshot 2">
+
 ## Running the script locally
 ### CPU
 1. download miniconda from https://docs.conda.io/projects/miniconda/en/latest/
