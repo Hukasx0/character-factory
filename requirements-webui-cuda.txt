@@ -1,0 +1,14 @@
+aichar
+PIL
+tqdm
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch==2.1.0+cu118
+torchaudio
+torchvision
+torchtext==0.6.0
+diffusers
+transformers
+accelerate
+ctransformers[cuda]
+langchain
+gradio
