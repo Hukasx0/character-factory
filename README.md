@@ -24,7 +24,7 @@ This Python script is designed to help you generate characters for [SillyTavern]
 
 This script is designed to streamline the process of character generation for SillyTavern, TavernAI, and TextGenerationWebUI by leveraging LLM and Stable Diffusion models. It provides an easy way to create unique and imaginative characters for storytelling, chatting and other purposes.
 
-## WebUI Colab
+## WebUI
 <img src="https://raw.githubusercontent.com/Hukasx0/character-factory/main/images/webui.png"  alt="Character Factory WebUI Screenshot 1">
 
 <img src="https://raw.githubusercontent.com/Hukasx0/character-factory/main/images/webui2.png" alt="Character Factory WebUI Screenshot 2">
