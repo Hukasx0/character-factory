@@ -1,5 +1,8 @@
 aichar
-PIL
+pillow
+trampoline
+einops
+wcwidth
 tqdm
 torch==2.1.0
 torchvision
