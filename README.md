@@ -24,12 +24,97 @@ This Python script is designed to help you generate characters for [SillyTavern]
 
 This script is designed to streamline the process of character generation for SillyTavern, TavernAI, and TextGenerationWebUI by leveraging LLM and Stable Diffusion models. It provides an easy way to create unique and imaginative characters for storytelling, chatting and other purposes.
 
-## WebUI
-Only available on Google Colab
-
+## WebUI Colab
 <img src="https://raw.githubusercontent.com/Hukasx0/character-factory/main/images/webui.png"  alt="Character Factory WebUI Screenshot 1">
 
 <img src="https://raw.githubusercontent.com/Hukasx0/character-factory/main/images/webui2.png" alt="Character Factory WebUI Screenshot 2">
+
+## Running WebUI locally
+### CPU
+1. download miniconda from https://docs.conda.io/projects/miniconda/en/latest/
+2. familiarize yourself with how conda works https://conda.io/projects/conda/en/latest/user-guide/getting-started.html
+3. Download Git (if you don't have it already) https://git-scm.com/
+4. Clone git repository
+```
+git clone https://github.com/Hukasx0/character-factory
+```
+5. Open the anaconda prompt and enter the path of the folder
+
+for example:
+```
+cd C:\Users\me\Desktop\character-factory
+```
+6. Execute these commands in the conda command prompt step by step.
+```
+conda create -n character-factory
+```
+```
+conda activate character-factory
+```
+```
+conda install python=3.11
+```
+```
+pip install -r requirements-webui.txt
+```
+and you can start using the WebUI:
+```
+python ./app/main-mistral-webui.py
+```
+or
+```
+python ./app/main-zephyr-webui.py
+```
+Then go to the link http://localhost:7860/ in your browser
+
+***Later, the next time you run it, you don't need to create a new environment, just repeat step 5. and type in (in the conda command prompt)***
+```
+conda activate character-factory
+```
+
+### Cuda
+1. download miniconda from https://docs.conda.io/projects/miniconda/en/latest/
+2. familiarize yourself with how conda works https://conda.io/projects/conda/en/latest/user-guide/getting-started.html
+3. Download Git (if you don't have it already) https://git-scm.com/
+4. Clone git repository
+```
+git clone https://github.com/Hukasx0/character-factory
+```
+5. Open the anaconda prompt and enter the path of the folder
+
+for example:
+```
+cd C:\Users\me\Desktop\character-factory
+```
+6. Download the Cuda package for Anaconda https://anaconda.org/nvidia/cuda
+8. Execute these commands in the conda command prompt step by step.
+```
+conda create -n character-factory
+```
+```
+conda activate character-factory
+```
+```
+conda install python=3.11
+```
+```
+pip install -r requirements-webui-cuda.txt
+```
+
+and you can start using the WebUI:
+```
+python ./app/main-mistral-webui.py
+```
+or
+```
+python ./app/main-zephyr-webui.py
+```
+Then go to the link http://localhost:7860/ in your browser
+
+***Later, the next time you run it, you don't need to create a new environment, just repeat step 5. and type in (in the conda command prompt)***
+```
+conda activate character-factory
+```
 
 ## Running the script locally
 ### CPU
@@ -154,6 +239,15 @@ version using Zephyr 7B beta:
 6. If everything is prepared, you can just run the last cell to generate characters
 
 ## Example usage:
+```
+python ./app/main-mistral-webui.py
+```
+Then go to the link http://localhost:7860/ in your browser
+```
+python ./app/main-zephyr-webui.py
+```
+Then go to the link http://localhost:7860/ in your browser
+
 ```
 python ./app/main-zephyr.py --topic "{{user}}'s pessimistic, monday-hating cat" --negative-prompt "human, gore, nsfw"
 ```
