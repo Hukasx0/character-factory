@@ -9,6 +9,7 @@ import re
 
 llm = None
 sd = None
+safety_checker_sd = None
 
 folder_path = 'models'
 model_url = 'https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF/resolve/main/mistral-7b-instruct-v0.1.Q4_K_M.gguf'
@@ -157,7 +158,7 @@ def generate_example_messages(character_name, character_summary, character_perso
     print(output)
     return output
 
-def generate_character_avatar(character_name, character_summary, topic, negative_prompt, avatar_prompt):
+def generate_character_avatar(character_name, character_summary, topic, negative_prompt, avatar_prompt, nsfw_filter):
     example_dialogue = """
 <s>[INST] create a prompt that lists the appearance characteristics of a character whose summary is Jamie Hale is a savvy and accomplished businessman who has carved a name for himself in the world of corporate success. With his sharp mind, impeccable sense of style, and unwavering determination, he has risen to the top of the business world. Jamie stands at 6 feet tall with a confident and commanding presence. He exudes charisma and carries himself with an air of authority that draws people to him.
 Jamie's appearance is always polished and professional. He is often seen in tailored suits that accentuate his well-maintained physique. His dark, well-groomed hair and neatly trimmed beard add to his refined image. His piercing blue eyes exude a sense of intense focus and ambition. Topic: business [/INST]
@@ -168,6 +169,7 @@ female, anime, Petite and delicate frame, Raven-black hair flowing down to her w
     """
     sd_prompt = input_none(avatar_prompt) or llm(example_dialogue+f"\n[INST] create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}. Topic: {topic if input_none(topic) else 'any theme'} [/INST]\n")
     print(sd_prompt)
+    sd_filter(nsfw_filter)
     return image_generate(character_name, sd_prompt, input_none(negative_prompt))
 
 def image_generate(character_name, prompt, negative_prompt):
@@ -187,6 +189,14 @@ def image_generate(character_name, prompt, negative_prompt):
     print("Generated character avatar")
 
     return generated_image
+
+def sd_filter(enable):
+  if enable:
+    sd.safety_checker = safety_checker_sd
+    sd.requires_safety_checker = True
+  else:
+    sd.safety_checker = None
+    sd.requires_safety_checker = False
 
 def input_none(text):
   user_input = text
@@ -268,8 +278,10 @@ with gr.Blocks() as webui:
           negative_prompt = gr.Textbox(placeholder="negative prompt for stable diffusion (optional)", label="negative prompt")
           avatar_prompt = gr.Textbox(placeholder="prompt for generating character avatar (If not provided, LLM will generate prompt from character description)", label="stable diffusion prompt")
           avatar_button = gr.Button("Generate avatar with stable diffusion (set character name first)")
+          potential_nsfw_checkbox = gr.Checkbox(label="Block potential NSFW image (Upon detection of this content, a black image will be returned)", value=True,
+                                               interactive=True)
           avatar_button.click(generate_character_avatar,
-                    inputs=[name, summary, topic, negative_prompt, avatar_prompt],
+                    inputs=[name, summary, topic, negative_prompt, avatar_prompt, potential_nsfw_checkbox],
                     outputs=image_input)
   with gr.Tab("Export character"):
     with gr.Column():
@@ -284,5 +296,6 @@ with gr.Blocks() as webui:
         export_card_button.click(export_character_card, inputs=[name, summary, personality, scenario, greeting_message, example_messages], outputs=export_image)
         export_json_button.click(export_as_json, inputs=[name, summary, personality, scenario, greeting_message, example_messages], outputs=export_json_textbox)
 
+safety_checker_sd = sd.safety_checker
 
 webui.launch(debug=True)

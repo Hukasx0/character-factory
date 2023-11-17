@@ -9,6 +9,7 @@ import re
 
 llm = None
 sd = None
+safety_checker_sd = None
 
 folder_path = 'models'
 model_url = 'https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q4_K_M.gguf'
@@ -201,7 +202,7 @@ Instead of the character's name you must use {{char}}.
     print(output)
     return output
 
-def generate_character_avatar(character_name, character_summary, topic, negative_prompt, avatar_prompt):
+def generate_character_avatar(character_name, character_summary, topic, negative_prompt, avatar_prompt, nsfw_filter):
     example_dialogue = """
 <|system|>
 You are a text generation tool, in the response you are supposed to give only descriptions of the appearance, what the character looks like, describe the character simply and unambiguously
@@ -215,6 +216,7 @@ Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing mo
 """
     sd_prompt = input_none(avatar_prompt) or llm(example_dialogue+f"\n<|user|> create a prompt that lists the appearance characteristics of a character whose summary is {character_summary}. Topic: {topic} </s>\n<|assistant|> ").strip()
     print(sd_prompt)
+    sd_filter(nsfw_filter)
     return image_generate(character_name, sd_prompt, input_none(negative_prompt))
 
 def image_generate(character_name, prompt, negative_prompt):
@@ -233,6 +235,14 @@ def image_generate(character_name, prompt, negative_prompt):
     generated_image.save(card_path)
     print("Generated character avatar")
     return generated_image
+
+def sd_filter(enable):
+  if enable:
+    sd.safety_checker = safety_checker_sd
+    sd.requires_safety_checker = True
+  else:
+    sd.safety_checker = None
+    sd.requires_safety_checker = False
 
 def input_none(text):
   user_input = text
@@ -314,8 +324,10 @@ with gr.Blocks() as webui:
           negative_prompt = gr.Textbox(placeholder="negative prompt for stable diffusion (optional)", label="negative prompt")
           avatar_prompt = gr.Textbox(placeholder="prompt for generating character avatar (If not provided, LLM will generate prompt from character description)", label="stable diffusion prompt")
           avatar_button = gr.Button("Generate avatar with stable diffusion (set character name first)")
+          potential_nsfw_checkbox = gr.Checkbox(label="Block potential NSFW image (Upon detection of this content, a black image will be returned)", value=True,
+                                               interactive=True)
           avatar_button.click(generate_character_avatar,
-                    inputs=[name, summary, topic, negative_prompt, avatar_prompt],
+                    inputs=[name, summary, topic, negative_prompt, avatar_prompt, potential_nsfw_checkbox],
                     outputs=image_input)
   with gr.Tab("Export character"):
     with gr.Column():
@@ -330,5 +342,6 @@ with gr.Blocks() as webui:
         export_card_button.click(export_character_card, inputs=[name, summary, personality, scenario, greeting_message, example_messages], outputs=export_image)
         export_json_button.click(export_as_json, inputs=[name, summary, personality, scenario, greeting_message, example_messages], outputs=export_json_textbox)
 
+safety_checker_sd = sd.safety_checker
 
 webui.launch(debug=True)
