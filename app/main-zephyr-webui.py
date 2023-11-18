@@ -251,7 +251,7 @@ def input_none(text):
   else:
     return user_input
 
-"""## Start WebUI (Alpha)"""
+"""## Start WebUI"""
 
 import gradio as gr
 from PIL import Image
@@ -286,7 +286,7 @@ def export_character_card(name, summary, personality, scenario, greeting_message
   return Image.open(card_path)
 
 with gr.Blocks() as webui:
-  gr.Markdown("# Character Factory WebUI (Alpha)")
+  gr.Markdown("# Character Factory WebUI")
   gr.Markdown("## Model: Zephyr 7b Beta")
   with gr.Tab("Edit character"):
     gr.Markdown("## Protip: If you want to generate the entire character using LLM and Stable Diffusion, start from the top to bottom")
