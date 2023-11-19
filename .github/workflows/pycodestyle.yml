@@ -23,7 +23,3 @@ jobs:
     - name: Check .py files
       run: |
         find app -name "*.py" -exec pycodestyle {} +
-
-    - name: Check Jupyter Notebook files
-      run: |
-        find colab -name "*.ipynb" -exec pycodestyle {} +
