@@ -73,7 +73,14 @@ def load_models():
             "temperature": 0.8,
             "context_length": 8192,
             "gpu_layers": gpu_layers,
-            "stop": ["/s", "</s>", "<s>", "[INST]", "[/INST]", "<|im_end|>"],
+            "stop": [
+                "/s",
+                "</s>",
+                "<s>",
+                "[INST]",
+                "[/INST]",
+                "<|im_end|>"
+            ],
         },
     )
 
