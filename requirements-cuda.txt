@@ -5,7 +5,7 @@ argparse
 torch==2.1.0+cu118
 torchaudio
 torchvision
-torchtext==0.6.0
+torchtext==0.16.1+cpu
 sdkit
 ctransformers[cuda]
 langchain
