@@ -406,6 +406,34 @@ def input_none(text):
 """## Start WebUI"""
 
 
+def import_character_json(json_path):
+    print(json_path)
+    if json_path is not None:
+        character = aichar.load_character_json_file(json_path)
+        return (
+            character.name,
+            character.summary,
+            character.personality,
+            character.scenario,
+            character.greeting_message,
+            character.example_messages,
+        )
+
+
+def import_character_card(card_path):
+    print(card_path)
+    if card_path is not None:
+        character = aichar.load_character_card_file(card_path)
+        return (
+            character.name,
+            character.summary,
+            character.personality,
+            character.scenario,
+            character.greeting_message,
+            character.example_messages,
+        )
+
+
 def export_as_json(
     name, summary, personality, scenario, greeting_message, example_messages
 ):
@@ -556,6 +584,43 @@ with gr.Blocks() as webui:
                         ],
                         outputs=image_input,
                     )
+    with gr.Tab("Import character"):
+        with gr.Column():
+            with gr.Row():
+                import_card_input = gr.File(
+                    label="Upload character card file", file_types=[".png"]
+                )
+                import_json_input = gr.File(
+                    label="Upload JSON file", file_types=[".json"]
+                )
+            with gr.Row():
+                import_card_button = gr.Button("Import character from character card")  # nopep8
+                import_json_button = gr.Button("Import character from json")
+
+            import_card_button.click(
+                import_character_card,
+                inputs=[import_card_input],
+                outputs=[
+                    name,
+                    summary,
+                    personality,
+                    scenario,
+                    greeting_message,
+                    example_messages,
+                ],
+            )
+            import_json_button.click(
+                import_character_json,
+                inputs=[import_json_input],
+                outputs=[
+                    name,
+                    summary,
+                    personality,
+                    scenario,
+                    greeting_message,
+                    example_messages,
+                ],
+            )
     with gr.Tab("Export character"):
         with gr.Column():
             with gr.Row():
