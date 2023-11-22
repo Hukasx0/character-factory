@@ -410,28 +410,34 @@ def import_character_json(json_path):
     print(json_path)
     if json_path is not None:
         character = aichar.load_character_json_file(json_path)
-        return (
-            character.name,
-            character.summary,
-            character.personality,
-            character.scenario,
-            character.greeting_message,
-            character.example_messages,
-        )
+        if character.name:
+            gr.Info("Character data loaded successfully")
+            return (
+                character.name,
+                character.summary,
+                character.personality,
+                character.scenario,
+                character.greeting_message,
+                character.example_messages,
+            )
+        raise ValueError("Error when importing character data from a JSON file. Validate the file. Check the file for correctness and try again")  # nopep8
 
 
 def import_character_card(card_path):
     print(card_path)
     if card_path is not None:
         character = aichar.load_character_card_file(card_path)
-        return (
-            character.name,
-            character.summary,
-            character.personality,
-            character.scenario,
-            character.greeting_message,
-            character.example_messages,
-        )
+        if character.name:
+            gr.Info("Character data loaded successfully")
+            return (
+                character.name,
+                character.summary,
+                character.personality,
+                character.scenario,
+                character.greeting_message,
+                character.example_messages,
+            )
+        raise ValueError("Error when importing character data from a character card file. Check the file for correctness and try again")  # nopep8
 
 
 def export_as_json(
