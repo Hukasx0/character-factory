@@ -412,7 +412,7 @@ with gr.Blocks() as webui:
     gr.Markdown("## Model: Mistral 7b instruct 0.1")
     with gr.Tab("Edit character"):
         gr.Markdown(
-            "## Protip: If you want to generate the entire character using LLM and Stable Diffusion, start from the top to bottom"  # nopep8
+            "## Hint: If you want to generate the entire character using LLM and Stable Diffusion, start from the top to bottom"  # nopep8
         )
         topic = gr.Textbox(
             placeholder="Topic: The topic for character generation (e.g., Fantasy, Anime, etc.)",  # nopep8
@@ -590,6 +590,13 @@ with gr.Blocks() as webui:
                     ],
                     outputs=export_json_textbox,
                 )
+    gr.HTML("""<div style='text-align: center; font-size: 20px;'>
+    <p>
+      <a style="text-decoration: none; color: inherit;" href="https://github.com/Hukasx0/character-factory">Character Factory</a> 
+      by 
+      <a style="text-decoration: none; color: inherit;" href="https://github.com/Hukasx0">Hubert "Hukasx0" Kasperek</a>
+    </p>
+  </div>""")  # nopep8
 
 safety_checker_sd = sd.safety_checker
 
