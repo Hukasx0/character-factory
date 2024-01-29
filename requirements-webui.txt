@@ -7,7 +7,7 @@ tqdm
 torch==2.1.2
 torchvision
 torchaudio
-torchtext==0.6.0
+torchtext==0.17.0+cpu
 diffusers
 transformers
 accelerate
