@@ -4,7 +4,7 @@ trampoline
 einops
 wcwidth
 tqdm
-torch==2.1.2
+torch==2.2.1+cu118
 torchvision
 torchaudio
 torchtext==0.6.0
