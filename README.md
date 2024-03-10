@@ -263,7 +263,7 @@ conda install python=3.11
 CT_METAL=1 pip install ctransformers --no-binary ctransformers
 ```
 ```
-pip install -r requirements-webui.txt
+pip install -r requirements.txt
 ```
 
 
