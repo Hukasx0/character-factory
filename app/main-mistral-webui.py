@@ -1,4 +1,6 @@
 import os
+import sys
+
 import aichar
 import requests
 from tqdm import tqdm
@@ -52,11 +54,16 @@ def load_models():
     if torch.cuda.is_available():
         sd.to("cuda")
         print("Loading Stable Diffusion to GPU...")
+    elif torch.backends.mps.is_available():
+        sd.to("mps")
+        print("Loading Stable Diffusion to Metal...")
     else:
+        if sys.platform == "darwin":
+            sd.to("cpu", torch.float32)
         print("Loading Stable Diffusion to CPU...")
     global llm
     gpu_layers = 0
-    if torch.cuda.is_available():
+    if torch.cuda.is_available() or torch.backends.mps.is_available():
         gpu_layers = 110
         print("Loading LLM to GPU...")
     else:
