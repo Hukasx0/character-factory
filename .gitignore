@@ -1,2 +1,6 @@
 models/
 app/models/
+characters/
+.idea/
+*.iml
+

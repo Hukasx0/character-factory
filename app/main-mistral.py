@@ -1,6 +1,8 @@
 import os
 import random
 import re
+import sys
+
 import aichar
 import requests
 from tqdm import tqdm
@@ -67,7 +69,7 @@ def prepare_llm():
         except Exception as e:
             print(f"Error while downloading Stable Diffusion model: {str(e)}")
     gpu_layers = 0
-    if torch.cuda.is_available():
+    if torch.cuda.is_available() or torch.backends.mps.is_available():
         gpu_layers = 110
         print("Loading LLM to GPU...")
     else:
@@ -311,8 +313,13 @@ def image_generate(character_name, prompt, negative_prompt):
     if torch.cuda.is_available():
         context.device = "cuda"
         print("Loading Stable Diffusion to GPU...")
+    elif torch.backends.mps.is_available():
+        context.device = "mps"
+        print("Loading Stable Diffusion to Metal...")
     else:
         context.device = "cpu"
+        if sys.platform == "darwin":
+            context.half_precision = False
         print("Loading Stable Diffusion to CPU...")
     context.model_paths[
         "stable-diffusion"
