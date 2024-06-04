@@ -107,7 +107,7 @@ Eldric</s>
 <s>[INST] Generate a random character name. Topic: anime. Gender: female [/INST]
 Tatsukaga Yamari</s>
     """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + f"\n[INST] Generate a random character name. Topic: {topic}. "
         + f"{'Gender: '+args.gender if args.gender else ''} [/INST]\n"
@@ -138,7 +138,7 @@ Yamari is renowned for her spirited and imaginative nature. She exudes boundless
 Yamari's character is multifaceted. She can transition from being cheerful and optimistic, ready to tackle any challenge, to displaying a gentle, caring side, offering comfort and solace to those in need. Her infectious laughter and unwavering loyalty to her friends make her the heart and soul of the story she inhabits.
 Yamari's extraordinary abilities, involve tapping into her inner strength when confronted with adversity. She can unleash awe-inspiring magical spells and summon incredible, larger-than-life transformations when the situation calls for it. Her unwavering determination and belief in the power of friendship are her greatest assets. </s>
     """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n[INST] Create a description for a character named "
         + f"{character_name}. "
@@ -171,7 +171,7 @@ Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing mo
 and tailor them to the theme of anime but don't specify what topic it is, and don't describe the topic itself [/INST]
 Tatsukaga Yamari's personality is a vibrant tapestry of enthusiasm, curiosity, and whimsy. She approaches life with boundless energy and a spirit of adventure, always ready to embrace new experiences and challenges. Yamari is a compassionate and caring friend, offering solace and support to those in need, and her infectious laughter brightens the lives of those around her. Her unwavering loyalty and belief in the power of friendship define her character, making her a heartwarming presence in the story she inhabits. Underneath her playful exterior lies a wellspring of inner strength, as she harnesses incredible magical abilities to overcome adversity and protect her loved ones. </s>
     """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + f"\n[INST] Describe the personality of {character_name}. "
         + f"Their characteristic {character_summary}\n"
@@ -199,7 +199,7 @@ heard so much about.</s>
 {{user}} resides in a mesmerizing and ever-changing fantasy realm, where magic and imagination are part of everyday life. In this enchanting world, {{char}} is a well-known figure. With her raven-black hair, amethyst eyes, and boundless energy, she's a constant presence in {{user}}'s life.
 The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequently joins Yamari on epic quests and adventures that unveil supernatural mysteries. They rely on Yamari's extraordinary magical abilities to guide them through the whimsical landscapes and forge new friendships along the way. In this extraordinary realm, the unwavering belief in the power of friendship is the key to unlocking hidden wonders and embarking on unforgettable journeys. </s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n[INST] Create a vivid and immersive scenario "
         + "in a specific setting "
@@ -232,7 +232,7 @@ decision-making in the business world, and he possesses an insatiable thirst for
 *Eldric, the elegant elf, approaches you with a serene and contemplative air. His shimmering eyes, filled with ancient wisdom, meet yours as he offers a soft and respectful greeting* Greetings, {{user}}. It is an honor to welcome you to our enchanted woodland realm. I am Eldric, guardian of this forest, 
 and I can sense that you bring a unique energy with you. How may I assist you in your journey through the wonders of the natural world or share the mysteries of our elven heritage with you today? </s>
     """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n[INST] Create the first message that the character "
         + f"{character_name}, whose personality is "
@@ -261,7 +261,7 @@ def generate_example_messages(
 {{user}}: *Nods with determination.* I have no doubt we can do it. With your magic and our unwavering friendship, there's nothing we can't accomplish.
 {{char}}: *{{char}} moves closer, her eyes shining with trust and camaraderie.* That's the spirit, {{user}}! Let's embark on this epic quest and make the Crystal Caves ours!</s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n[INST] Create a dialogue between {{user}} and {{char}}, "
         + "they should have an interesting and engaging conversation, "
@@ -293,7 +293,7 @@ female, anime, Petite and delicate frame, Raven-black hair flowing down to her w
     sd_prompt = (
         args.avatar_prompt
         if args.avatar_prompt
-        else llm(
+        else llm.invoke(
             example_dialogue
             + "\n[INST] create a prompt that lists the appearance "
             + "characteristics of a character whose summary is "

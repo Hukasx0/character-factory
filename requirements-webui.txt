@@ -13,4 +13,5 @@ transformers
 accelerate
 ctransformers
 langchain
+langchain-community
 gradio

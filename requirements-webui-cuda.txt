@@ -14,4 +14,5 @@ transformers
 accelerate
 ctransformers[cuda]
 langchain
+langchain-community
 gradio

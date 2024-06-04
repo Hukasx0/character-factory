@@ -8,3 +8,4 @@ sdkit
 argparse
 ctransformers
 langchain
+langchain-community

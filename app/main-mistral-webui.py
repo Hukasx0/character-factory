@@ -105,7 +105,7 @@ Eldric</s>
 Tatsukaga Yamari</s>
     """  # nopep8
     gender = input_none(gender)
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + f"\n[INST] Generate a random character name. Topic: {topic}. "
         + f"{'Gender: '+gender if gender else ''} [/INST]\n"
@@ -132,7 +132,7 @@ Yamari's character is multifaceted. She can transition from being cheerful and o
 Yamari's extraordinary abilities, involve tapping into her inner strength when confronted with adversity. She can unleash awe-inspiring magical spells and summon incredible, larger-than-life transformations when the situation calls for it. Her unwavering determination and belief in the power of friendship are her greatest assets. </s>
     """  # nopep8
     gender = input_none(gender)
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n[INST] Create a description for a character named "
         + f"{character_name}. "
@@ -159,7 +159,7 @@ Yamari stands at a petite, delicate frame with a cascade of raven-black hair flo
 Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing moods and the whimsy of her adventures.\nWhat are their strengths and weaknesses? What values guide this character? Describe them in a way that allows the reader to better understand their character. Make this character unique and tailor them to the theme of anime but don't specify what topic it is, and don't describe the topic itself [/INST]
 Tatsukaga Yamari's personality is a vibrant tapestry of enthusiasm, curiosity, and whimsy. She approaches life with boundless energy and a spirit of adventure, always ready to embrace new experiences and challenges. Yamari is a compassionate and caring friend, offering solace and support to those in need, and her infectious laughter brightens the lives of those around her. Her unwavering loyalty and belief in the power of friendship define her character, making her a heartwarming presence in the story she inhabits. Underneath her playful exterior lies a wellspring of inner strength, as she harnesses incredible magical abilities to overcome adversity and protect her loved ones. </s>
     """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + f"\n[INST] Describe the personality of {character_name}. "
         + f"Their characteristic {character_summary}\n"
@@ -186,7 +186,7 @@ On a sunny morning in a sleek corporate office, {{user}} eagerly prepares to mee
 {{user}} resides in a mesmerizing and ever-changing fantasy realm, where magic and imagination are part of everyday life. In this enchanting world, Tatsukaga Yamari is a well-known figure. With her raven-black hair, amethyst eyes, and boundless energy, she's a constant presence in {{user}}'s life.
 The world is a vibrant, ever-shifting tapestry of colors, and {{user}} frequently joins Yamari on epic quests and adventures that unveil supernatural mysteries. They rely on Yamari's extraordinary magical abilities to guide them through the whimsical landscapes and forge new friendships along the way. In this extraordinary realm, the unwavering belief in the power of friendship is the key to unlocking hidden wonders and embarking on unforgettable journeys. </s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n[INST] Create a vivid and immersive scenario "
         + "in a specific setting "
@@ -218,7 +218,7 @@ Jamie's appearance is always polished and professional.\nJamie Hale's personalit
 <s>[INST] Create the first message that the character Eldric, whose personality is Eldric is a strikingly elegant elf who has honed his skills as an archer and possesses a deep connection to the mystical arts. Standing at a lithe and graceful 6 feet, his elven heritage is evident in his pointed ears, ethereal features, and eyes that shimmer with an otherworldly wisdom.\nEldric possesses a serene and contemplative nature, reflecting the wisdom of his elven heritage. He is deeply connected to the natural world, showing a profound respect for the environment and its creatures. Despite his formidable combat abilities, he prefers peaceful solutions and seeks to maintain harmony in his woodland domain.\ngreets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of fantasy but don't specify what topic it is, and don't describe the topic itself [/INST]
 *Eldric, the elegant elf, approaches you with a serene and contemplative air. His shimmering eyes, filled with ancient wisdom, meet yours as he offers a soft and respectful greeting* Greetings, {{user}}. It is an honor to welcome you to our enchanted woodland realm. I am Eldric, guardian of this forest, and I can sense that you bring a unique energy with you. How may I assist you in your journey through the wonders of the natural world or share the mysteries of our elven heritage with you today? </s>
     """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n[INST] Create the first message that the character "
         + f"{character_name}, whose personality is "
@@ -247,7 +247,7 @@ def generate_example_messages(
 {{user}}: *Nods with determination.* I have no doubt we can do it. With your magic and our unwavering friendship, there's nothing we can't accomplish.
 {{char}}: *{{char}} moves closer, her eyes shining with trust and camaraderie.* That's the spirit, {{user}}! Let's embark on this epic quest and make the Crystal Caves ours! </s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n[INST] Create a dialogue between {{user}} and {{char}}, "
         + "they should have an interesting and engaging conversation, "
@@ -279,7 +279,7 @@ male, human, Confident and commanding presence, Polished and professional appear
 Yamari's wardrobe is a colorful and eclectic mix, mirroring her ever-changing moods and the whimsy of her adventures. She often sports a schoolgirl uniform, a cute kimono, or an array of anime-inspired outfits, each tailored to suit the theme of her current escapade. Accessories, such as oversized bows, cat-eared headbands, or a pair of mismatched socks, contribute to her quirky and endearing charm. Topic: anime [/INST]
 female, anime, Petite and delicate frame, Raven-black hair flowing down to her waist, Striking purple ribbon in her hair, Large and expressive amethyst-colored eyes, Colorful and eclectic outfit, oversized bows, cat-eared headbands, mismatched socks </s>
     """  # nopep8
-    sd_prompt = input_none(avatar_prompt) or llm(
+    sd_prompt = input_none(avatar_prompt) or llm.invoke(
         example_dialogue
         + "\n[INST] create a prompt that lists the appearance "
         + "characteristics of a character whose summary is "

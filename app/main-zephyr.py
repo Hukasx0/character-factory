@@ -114,7 +114,7 @@ You only answer by giving the name of the character, you do not describe it, you
 <|user|> Generate a random character name. Topic: {{user}}'s pet cat. </s>
 <|assistant|> mr. Fluffy </s>
     """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n<|user|> Generate a random character name. "
         + f"Topic: {topic}. "
@@ -154,7 +154,7 @@ Mr Fluffy loves: good food, Being more intelligent and smarter than other people
 Mr Fluffy hates: cheap food, loud people
 Mr Fluffy abilities: An ordinary domestic cat with the ability to speak and incredible knowledge of philosophy, Can eat incredible amounts of (good) food and not feel satiated </s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n<|user|> Create a longer description for a character named "
         + f"{character_name}. "
@@ -192,7 +192,7 @@ Your answer should be in the same form as the previous answers.
 <|user|> Describe the personality of Mr Fluffy. Their characteristics  Mr fluffy is {{user}}'s cat who is very fat and fluffy, he has black and white colored fur, this cat is 3 years old, he loves special expensive cat food and lying on {{user}}'s lap while he does his homework. Mr. Fluffy can speak human language, he is a cat who talks a lot about philosophy and expresses himself in a very sarcastic way </s>
 <|assistant|> Mr Fluffy is small, calm, lazy, mischievous cat, speaks in a very philosophical manner and is very sarcastic in his statements, very intelligent for a cat and even for a human, has a vast amount of knowledge about philosophy and the world </s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + f"\n<|user|> Describe the personality of {character_name}. "
         + f"Their characteristic {character_summary}\nDescribe them "
@@ -228,7 +228,7 @@ You can not describe the character, but you have to describe the scenario and ac
 <|user|> Write a simple and undemanding introduction to the story, in which the main characters will be {{user}} and {{char}}, do not develop the story, write only the introduction. {{char}} characteristics: Tatsukaga Yamari is an 23 year old anime girl, who loves books and coffee. Make this character unique and tailor them to the theme of anime, but don't specify what topic it is, and don't describe the topic itself. Your response must end when {{user}} and {{char}} interact. </s>
 <|assistant|> When {{user}} found a magic stone in the forest, he moved to the magical world, where he meets {{char}}, who looks at him in disbelief, but after a while comes over to greet him. </s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + f"\n<|user|> Write a scenario for chat roleplay "
         + "to serve as a simple storyline to start chat "
@@ -265,7 +265,7 @@ decision-making in the business world, and he possesses an insatiable thirst for
 abilities, he prefers peaceful solutions and seeks to maintain harmony in his woodland domain.\ngreets the user we are addressing as {{user}}. Make this character unique and tailor them to the theme of fantasy but don't specify what topic it is, and don't describe the topic itself </s>
 <|assistant|> *Eldric, the elegant elf, approaches you with a serene and contemplative air. His shimmering eyes, filled with ancient wisdom, meet yours as he offers a soft and respectful greeting* Greetings, {{user}}. It is an honor to welcome you to our enchanted woodland realm. I am Eldric, guardian of this forest, and I can sense that you bring a unique energy with you. How may I assist you in your journey through the wonders of the natural world or share the mysteries of our elven heritage with you today? </s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + "\n<|user|> Create the first message that the character "
         + f"{character_name}, whose personality is "
@@ -307,7 +307,7 @@ Instead of the character's name you must use {{char}}.
 {{user}}: *Nods with determination.* I have no doubt we can do it. With your magic and our unwavering friendship, there's nothing we can't accomplish.
 {{char}}: *{{char}} moves closer, her eyes shining with trust and camaraderie.* That's the spirit, {{user}}! Let's embark on this epic quest and make the Crystal Caves ours! </s>
 """  # nopep8
-    output = llm(
+    output = llm.invoke(
         example_dialogue
         + f"\n<|user|> Create a dialogue between {{user}} and {{char}}, "
         + "they should have an interesting and engaging conversation, "
@@ -343,7 +343,7 @@ cat-eared headbands, or a pair of mismatched socks, contribute to her quirky and
     sd_prompt = (
         args.avatar_prompt
         if args.avatar_prompt
-        else llm(
+        else llm.invoke(
             example_dialogue
             + "\n<|user|> create a prompt that lists the appearance "
             + "characteristics of a character whose summary is "
