@@ -324,6 +324,15 @@ Instead of the character's name you must use {{char}}.
     print(output)
     return output
 
+def save_uploaded_image(image, character_name):
+    if image is not None:
+        character_name = character_name.replace(" ", "_")
+        os.makedirs(f"characters/{character_name}", exist_ok=True)
+        image_path = f"characters/{character_name}/{character_name}.png"
+        image.save(image_path, format='PNG')
+        return image_path
+    else:
+        return None
 
 def generate_character_avatar(
     character_name,
@@ -565,9 +574,12 @@ with gr.Blocks() as webui:
                     inputs=[name, summary, personality, topic],
                     outputs=example_messages,
                 )
+            gr.Markdown("## Generate a character avatar using Stable Diffusion or upload an image file (.png file format is recommended)")
+            gr.Markdown("### (set character name first)")
             with gr.Row():
                 with gr.Column():
-                    image_input = gr.Image(width=512, height=512)
+                    image_input = gr.Image(width=512, height=512, type="pil", sources=["upload", "clipboard"])
+                    image_input.upload(save_uploaded_image, inputs=[image_input, name], outputs=image_input)
                 with gr.Column():
                     negative_prompt = gr.Textbox(
                         placeholder="negative prompt for stable diffusion (optional)",  # nopep8
