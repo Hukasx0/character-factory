@@ -649,7 +649,7 @@ with gr.Blocks() as webui:
     with gr.Tab("Export character"):
         with gr.Column():
             with gr.Row():
-                export_image = gr.Image(width=512, height=512)
+                export_image = gr.Image(width=512, height=512, format="png")
                 export_json_textbox = gr.JSON()
 
             with gr.Row():
