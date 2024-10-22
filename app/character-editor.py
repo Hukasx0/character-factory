@@ -86,7 +86,7 @@ def export_character_card(name, summary, personality, scenario, greeting_message
   character_name = character.name.replace(" ", "_")
   card_path = f"{base_path}{character_name}.card.png"
   character.export_neutral_card_file(card_path)
-  return Image.open(card_path)
+  return card_path
 
 with gr.Blocks() as webui:
     gr.Markdown("# Character Editor")
@@ -127,7 +127,7 @@ with gr.Blocks() as webui:
     with gr.Tab("Export character"):
         with gr.Column():
             with gr.Row():
-                export_image = gr.Image(width=512, height=512, format="png")
+                export_image = gr.Image(type="pil")
                 export_json_textbox = gr.JSON()
 
             with gr.Row():
