@@ -10,6 +10,11 @@ WebUI using Zephyr 7B beta:
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
+Character Editor (manual editing without AI):
+<a target="_blank" href="https://colab.research.google.com/drive/1wWCQ3fRa-rpaDKAdE__YRMUK31mLU81k">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
 This Python script is designed to help you generate characters for [SillyTavern](https://github.com/SillyTavern/SillyTavern), [TavernAI](https://github.com/TavernAI/TavernAI), [TextGenerationWebUI](https://github.com/oobabooga/text-generation-webui) and many more, using LLM (Large Language Model) and Stable Diffusion. The script utilizes various deep learning models to create detailed character cards, including names, summaries, personalities, greeting messages, and character avatars.
 
 <div>
@@ -29,7 +34,7 @@ This script is designed to streamline the process of character generation for Si
 
 <img src="https://raw.githubusercontent.com/Hukasx0/character-factory/main/images/webui2.png" alt="Character Factory WebUI Screenshot 2">
 
-## Character Editor
+## Character Editor (Character factory without AI)
 In addition to the AI-powered character generation, Character Factory includes a manual character editor that allows you to create and edit characters without using AI models. This tool is perfect for:
 
 - Manual character creation and editing
@@ -38,6 +43,14 @@ In addition to the AI-powered character generation, Character Factory includes a
 - Converting between character formats (JSON ↔ Character Cards)
 
 ### Running Character Editor
+You can use the Character Editor in two ways:
+
+**Option 1: Google Colab (no installation required)**
+<a target="_blank" href="https://colab.research.google.com/drive/1wWCQ3fRa-rpaDKAdE__YRMUK31mLU81k">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+**Option 2: Local installation**
 After setting up your environment (following the installation steps below), you can run the character editor with:
 ```
 python ./app/character-editor.py
