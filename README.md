@@ -29,6 +29,26 @@ This script is designed to streamline the process of character generation for Si
 
 <img src="https://raw.githubusercontent.com/Hukasx0/character-factory/main/images/webui2.png" alt="Character Factory WebUI Screenshot 2">
 
+## Character Editor
+In addition to the AI-powered character generation, Character Factory includes a manual character editor that allows you to create and edit characters without using AI models. This tool is perfect for:
+
+- Manual character creation and editing
+- Importing existing character cards or JSON files
+- Fine-tuning AI-generated characters
+- Converting between character formats (JSON ↔ Character Cards)
+
+### Running Character Editor
+After setting up your environment (following the installation steps below), you can run the character editor with:
+```
+python ./app/character-editor.py
+```
+Then go to http://localhost:7860/ in your browser
+
+The Character Editor provides:
+- **Edit tab**: Create or modify character properties (name, summary, personality, scenario, greeting message, example messages) and upload character avatars
+- **Import tab**: Load existing characters from character card files (.png) or JSON files (.json)
+- **Export tab**: Save your characters as character cards (.png) or JSON files
+
 ## Running WebUI locally
 ### CPU
 1. download miniconda from https://docs.conda.io/projects/miniconda/en/latest/
@@ -322,6 +342,8 @@ version using Zephyr 7B beta:
 6. If everything is prepared, you can just run the last cell to generate characters
 
 ## Example usage:
+
+### WebUI (AI-powered generation):
 ```
 python ./app/main-mistral-webui.py
 ```
@@ -331,6 +353,13 @@ python ./app/main-zephyr-webui.py
 ```
 Then go to the link http://localhost:7860/ in your browser
 
+### Character Editor (manual editing):
+```
+python ./app/character-editor.py
+```
+Then go to the link http://localhost:7860/ in your browser
+
+### Command line (AI-powered generation):
 ```
 python ./app/main-zephyr.py --topic "{{user}}'s pessimistic, monday-hating cat" --negative-prompt "human, gore, nsfw"
 ```
