@@ -16,3 +16,5 @@ ctransformers[cuda]
 langchain
 langchain-community
 gradio
+numpy<2.0
+sdkit

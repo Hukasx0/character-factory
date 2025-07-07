@@ -12,7 +12,7 @@ from sdkit.generate import generate_images
 from sdkit.utils import log
 import torch
 import argparse
-from langchain.llms import CTransformers
+from langchain_community.llms import CTransformers
 
 llm = None
 

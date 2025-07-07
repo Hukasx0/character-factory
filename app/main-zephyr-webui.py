@@ -6,7 +6,7 @@ import requests
 from tqdm import tqdm
 from diffusers import DiffusionPipeline
 import torch
-from langchain.llms import CTransformers
+from langchain_community.llms import CTransformers
 import gradio as gr
 from PIL import Image
 import re

@@ -4,8 +4,9 @@ torch==2.1.2
 torchvision
 torchaudio
 torchtext==0.6.0
-sdkit
 argparse
 ctransformers
 langchain
 langchain-community
+numpy<2.0
+sdkit

@@ -6,7 +6,8 @@ torch==2.1.2+cu118
 torchaudio
 torchvision
 torchtext==0.6.0
-sdkit
 ctransformers[cuda]
 langchain
 langchain-community
+numpy<2.0
+sdkit
