@@ -8,5 +8,5 @@ argparse
 ctransformers
 langchain
 langchain-community
-numpy<2.0
+numpy<3.0
 sdkit

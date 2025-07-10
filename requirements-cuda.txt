@@ -9,5 +9,5 @@ torchtext==0.6.0
 ctransformers[cuda]
 langchain
 langchain-community
-numpy<2.0
+numpy<3.0
 sdkit
