@@ -1,5 +1,10 @@
 # Character factory
 
+Power User WebUI:
+<a target="_blank" href="https://colab.research.google.com/drive/1WvU3wS7NgmElwNycQ344HGKYrQmDbWj4">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
 WebUI using Mistral 7b instruct 0.1:
 <a target="_blank" href="https://colab.research.google.com/drive/108koWoCDGaLZhZ0eV-gFuWtsnnLFMeCB">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
@@ -62,6 +67,20 @@ The Character Editor provides:
 - **Import tab**: Load existing characters from character card files (.png) or JSON files (.json)
 - **Export tab**: Save your characters as character cards (.png) or JSON files
 
+## Power User WebUI
+For advanced users, there is a "Power User" version of the WebUI that provides more control over the generation process. This version is ideal for those who want to experiment with different models and fine-tune the generation prompts.
+
+### Features
+- **Custom Models**: Specify any GGUF-compatible LLM from a Hugging Face URL and any Stable Diffusion model from Hugging Face.
+- **Prompt Editing**: Edit all the prompts used for generating character attributes directly in the UI.
+
+### Running Power User WebUI
+After setting up your environment (following the installation steps below), you can run the power user webui with:
+```
+python ./app/main-poweruser-webui.py
+```
+Then go to http://localhost:7860/ in your browser
+
 ## Running WebUI locally
 ### CPU
 1. download miniconda from https://docs.conda.io/projects/miniconda/en/latest/
@@ -97,6 +116,10 @@ python ./app/main-mistral-webui.py
 or
 ```
 python ./app/main-zephyr-webui.py
+```
+or for power users:
+```
+python ./app/main-poweruser-webui.py
 ```
 Then go to the link http://localhost:7860/ in your browser
 
@@ -142,6 +165,10 @@ or
 ```
 python ./app/main-zephyr-webui.py
 ```
+or for power users:
+```
+python ./app/main-poweruser-webui.py
+```
 Then go to the link http://localhost:7860/ in your browser
 
 ### Metal (Mac M1/M2/M3)
@@ -182,6 +209,10 @@ python ./app/main-mistral-webui.py
 or
 ```
 python ./app/main-zephyr-webui.py
+```
+or for power users:
+```
+python ./app/main-poweruser-webui.py
 ```
 Then go to the link http://localhost:7860/ in your browser
 
@@ -363,6 +394,11 @@ python ./app/main-mistral-webui.py
 Then go to the link http://localhost:7860/ in your browser
 ```
 python ./app/main-zephyr-webui.py
+```
+Then go to the link http://localhost:7860/ in your browser
+or for power users:
+```
+python ./app/main-poweruser-webui.py
 ```
 Then go to the link http://localhost:7860/ in your browser
 
