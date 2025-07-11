@@ -1,6 +1,6 @@
 # Character factory
 
-Power User WebUI:
+WebUI for Power Users:
 <a target="_blank" href="https://colab.research.google.com/drive/1WvU3wS7NgmElwNycQ344HGKYrQmDbWj4">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>

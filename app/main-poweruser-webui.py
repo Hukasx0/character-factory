@@ -155,11 +155,13 @@ def load_models(llm_model_url, sd_model_id, progress=gr.Progress(track_tqdm=True
         os.makedirs(folder_path)
     llm_model_name = os.path.join(folder_path, os.path.basename(llm_model_url))
     if not os.path.exists(llm_model_name):
+        gr.Info(f"LLM model not found, starting download from {llm_model_url}")
         try:
             with requests.get(llm_model_url, stream=True) as response:
                 response.raise_for_status()
                 total_size = int(response.headers.get("content-length", 0))
                 block_size = 1024
+                
                 progress_bar = tqdm(
                     total=total_size,
                     unit="B",
@@ -167,16 +169,25 @@ def load_models(llm_model_url, sd_model_id, progress=gr.Progress(track_tqdm=True
                     unit_divisor=1024,
                     desc=f"Downloading {os.path.basename(llm_model_url)}"
                 )
+                
+                downloaded = 0
                 with open(llm_model_name, "wb") as out_file:
                     for data in response.iter_content(chunk_size=block_size):
                         out_file.write(data)
                         progress_bar.update(len(data))
+                        if total_size > 0:
+                            downloaded += len(data)
+                            progress(downloaded / total_size, f"Downloading LLM model... {downloaded // 1024 // 1024}MB / {total_size // 1024 // 1024}MB")
+
                     progress_bar.close()
         except Exception as e:
             print(f"Error while downloading LLM model: {str(e)}")
             raise gr.Error(f"Error while downloading LLM model: {str(e)}")
 
+    gr.Info("LLM model file is ready.")
+
     global sd
+    gr.Info(f"Loading Stable Diffusion model: {sd_model_id}...")
     try:
         for _ in tqdm(range(1), desc=f"Loading Stable Diffusion model: {sd_model_id}"):
             sd = DiffusionPipeline.from_pretrained(
@@ -195,6 +206,7 @@ def load_models(llm_model_url, sd_model_id, progress=gr.Progress(track_tqdm=True
     elif torch.backends.mps.is_available():
         device = "mps"
 
+    gr.Info(f"Moving Stable Diffusion to {device}...")
     for _ in tqdm(range(1), desc=f"Moving Stable Diffusion to {device}"):
         if torch.cuda.is_available():
             sd.to("cuda")
@@ -214,6 +226,7 @@ def load_models(llm_model_url, sd_model_id, progress=gr.Progress(track_tqdm=True
         gpu_layers = 110
         llm_device = "GPU"
     
+    gr.Info(f"Loading LLM model to {llm_device}...")
     try:
         for _ in tqdm(range(1), desc=f"Loading LLM model to {llm_device}"):
             llm = CTransformers(
@@ -713,22 +726,20 @@ with gr.Blocks() as webui:
     </p>
   </div>""")  # nopep8
 
-    all_edit_inputs = [
-        topic, gender, name, summary, personality, scenario, greeting_message,
-        example_messages, image_input, negative_prompt, avatar_prompt,
-        potential_nsfw_checkbox, name_button, summary_button, personality_button,
+    generation_buttons = [
+        name_button, summary_button, personality_button,
         scenario_button, greeting_message_button, example_messages_button, avatar_button
     ]
 
-    # Set interactive=False initially for the edit tab
-    webui.load(lambda: [gr.update(interactive=False) for _ in all_edit_inputs], None, all_edit_inputs)
+    # Set interactive=False initially for the generation buttons
+    webui.load(lambda: [gr.update(interactive=False) for _ in generation_buttons], None, generation_buttons)
 
     load_models_button.click(
         load_models,
         inputs=[llm_model_url_input, sd_model_id_input],
         outputs=[edit_tab]
     ).then(
-        lambda: [gr.update(interactive=True) for _ in all_edit_inputs], None, all_edit_inputs
+        lambda: [gr.update(interactive=True) for _ in generation_buttons], None, generation_buttons
     )
 
     name_button.click(
