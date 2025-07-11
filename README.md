@@ -1,4 +1,9 @@
-# Character factory
+# Character Factory
+
+> [!WARNING]
+> ## ⚠️ This project has been archived ⚠️
+> This project is no longer actively maintained. It is read-only. You can still fork it and use it as you wish, but there will be no further updates or support from the author.
+
 
 WebUI for Power Users:
 <a target="_blank" href="https://colab.research.google.com/drive/1WvU3wS7NgmElwNycQ344HGKYrQmDbWj4">

@@ -149,7 +149,7 @@ cat-eared headbands, or a pair of mismatched socks, contribute to her quirky and
 """
 
 
-def load_models(llm_model_url, sd_model_id, progress=gr.Progress(track_tqdm=True)):
+def load_models(llm_model_url, sd_model_id, progress=gr.Progress()):
     folder_path = "models"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
