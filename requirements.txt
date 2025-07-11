@@ -1,7 +1,7 @@
 aichar==1.0.5
 tqdm==4.67.1
 torch==2.1.2
-torchvision==0.16.2
+torchvision==0.22.1+cu118
 torchaudio==2.1.2
 torchtext==0.6.0
 ctransformers==0.2.27
