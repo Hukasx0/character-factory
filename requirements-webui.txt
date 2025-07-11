@@ -6,7 +6,7 @@ wcwidth==0.2.13
 tqdm==4.67.1
 torch==2.1.2
 torchvision==0.16.2
-torchaudio==2.1.2
+torchaudio==2.7.1+cu118
 torchtext==0.6.0
 diffusers==0.34.0
 transformers==4.53.1
