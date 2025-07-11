@@ -1,7 +1,7 @@
 aichar==1.0.5
 pillow==11.3.0
 trampoline==0.1.2
-einops==0.3.0
+einops==0.8.1
 wcwidth==0.2.13
 tqdm==4.67.1
 --extra-index-url https://download.pytorch.org/whl/cu118
