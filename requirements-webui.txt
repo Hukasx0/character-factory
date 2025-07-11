@@ -9,7 +9,7 @@ torchvision==0.16.2
 torchaudio==2.1.2
 torchtext==0.6.0
 diffusers==0.34.0
-transformers==4.53.1
+transformers==4.53.2
 accelerate==1.8.1
 ctransformers==0.2.27
 langchain==0.3.26
