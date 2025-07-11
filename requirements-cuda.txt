@@ -9,4 +9,4 @@ ctransformers[cuda]==0.2.27
 langchain==0.3.26
 langchain-community==0.3.27
 numpy==1.26.4
-sdkit==2.0.17
+sdkit==2.0.22.8
